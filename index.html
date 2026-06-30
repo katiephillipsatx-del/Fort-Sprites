@@ -10,215 +10,108 @@
     --accent: #e94560;
     --gold: #f5b942;
     --green: #22c55e;
-    --card: #fdf6ee;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--bg);
-    min-height: 100vh;
-    padding: 20px;
-    color: #222;
-  }
-
-  /* ── SETUP OVERLAY ── */
-  #setupOverlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 1000; padding: 20px;
-  }
-  .setup-card {
-    background: var(--card); border-radius: 16px; padding: 32px;
-    max-width: 520px; width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  }
-  .setup-card h2 { margin: 0 0 6px; font-size: 22px; }
-  .setup-card p { margin: 0 0 16px; font-size: 13px; color: #666; line-height: 1.5; }
-  .setup-card label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
-  .setup-card input {
-    width: 100%; border: 2px solid #ddd; border-radius: 8px;
-    padding: 8px 12px; font-size: 13px; margin-bottom: 12px;
-    font-family: monospace;
-  }
-  .setup-card input:focus { outline: none; border-color: var(--accent); }
-  .setup-hint {
-    background: #f0ebe2; border-radius: 8px; padding: 12px;
-    font-size: 12px; font-family: monospace; margin-bottom: 16px;
-    white-space: pre-wrap; color: #555; line-height: 1.6;
-  }
-  .setup-row { display: flex; gap: 8px; flex-wrap: wrap; }
-
-  /* ── MAIN APP ── */
-  .container {
-    max-width: 1200px; margin: 0 auto;
-    background: var(--card); border-radius: 16px;
-    padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  }
+  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: #222; }
+  .container { max-width: 1100px; margin: 0 auto; background: #fdf6ee; border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
   header { text-align: center; margin-bottom: 14px; }
   .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #666; text-transform: uppercase; }
-  header h1 {
-    font-size: 36px; margin: 4px 0;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-weight: 900;
-  }
+  header h1 { font-size: 36px; margin: 4px 0; background: linear-gradient(90deg, var(--accent), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
 
-  .room-banner {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: #f0ebe2; border-radius: 10px; padding: 8px 16px;
-    margin-bottom: 14px; flex-wrap: wrap; font-size: 13px;
-  }
-  .room-code {
-    font-family: monospace; font-weight: 800; font-size: 18px;
-    color: var(--accent); letter-spacing: 2px;
-  }
-
-  .name-bar {
-    display: flex; align-items: center; gap: 10px; justify-content: center;
-    margin-bottom: 14px; flex-wrap: wrap;
-  }
+  .name-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
   .name-bar span { font-weight: 700; font-size: 14px; }
-  .name-bar input {
-    border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px;
-    font-size: 14px; font-weight: 700; width: 180px;
-  }
+  .name-bar input { border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px; font-size: 14px; font-weight: 700; width: 180px; }
   .name-bar input:focus { outline: none; border-color: var(--accent); }
 
-  /* Online members */
-  .online-bar {
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-    margin-bottom: 16px; justify-content: center; min-height: 30px;
-  }
-  .online-label { font-size: 12px; font-weight: 700; color: #888; }
-  .member-pill {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: #fff; border: 2px solid #eee; border-radius: 20px;
-    padding: 3px 10px; font-size: 12px; font-weight: 700;
-  }
-  .member-pill.me { border-color: var(--accent); color: var(--accent); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; }
-
-  /* Tabs */
   .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e5e0d8; }
-  .tab {
-    padding: 8px 20px; cursor: pointer; border-radius: 8px 8px 0 0;
-    font-weight: 700; font-size: 14px; border: none; background: transparent; color: #888;
-  }
+  .tab { padding: 8px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 700; font-size: 14px; border: none; background: transparent; color: #888; }
   .tab.active { background: var(--accent); color: #fff; }
 
-  /* Progress */
-  .progress-wrap {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 18px; flex-wrap: wrap; justify-content: center;
-  }
+  .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
   .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #e5e0d8; border-radius: 8px; overflow: hidden; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.3s; }
   #progressText { font-weight: 700; font-size: 14px; }
 
-  /* Controls */
   .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-  button {
-    cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px;
-    font-weight: 700; font-size: 13px; background: var(--accent); color: #fff;
-    transition: opacity 0.2s, transform 0.1s;
-  }
+  button { cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; font-size: 13px; background: var(--accent); color: #fff; transition: opacity 0.2s, transform 0.1s; }
   button:hover { opacity: 0.85; }
   button:active { transform: scale(0.96); }
   button.secondary { background: #555; }
   button.green { background: var(--green); }
-  button:disabled { opacity: 0.4; cursor: default; }
 
-  /* Checklist */
+  .share-box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 2px solid #e5e0d8; }
+  .share-box h3 { margin: 0 0 8px; font-size: 15px; }
+  .share-box p { margin: 0 0 10px; font-size: 13px; color: #666; }
+  .share-url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .share-url input { flex: 1; min-width: 200px; border: 2px solid #ddd; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f5f5f5; }
+
+  /* Sprite grid */
   .category { margin-bottom: 22px; }
   .category h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin-bottom: 10px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+
   .sprite-item {
     display: flex; flex-direction: column; align-items: center; gap: 5px;
-    background: #fff; border-radius: 10px; padding: 8px 4px;
-    border: 2px solid #eee; transition: border-color 0.2s, background 0.2s; cursor: pointer;
+    background: #fff; border-radius: 10px; padding: 6px 4px 8px;
+    border: 2px solid #eee; cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    position: relative;
   }
+  .sprite-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
   .sprite-item.checked { border-color: var(--accent); background: #fff0f3; }
-  .sprite-item .name { font-size: 10px; text-align: center; color: #666; line-height: 1.2; min-height: 24px; }
+  .sprite-item.checked::after {
+    content: '✓'; position: absolute; top: 4px; right: 6px;
+    color: var(--accent); font-weight: 900; font-size: 14px;
+  }
+
+  .sprite-img {
+    width: 64px; height: 70px; border-radius: 6px; overflow: hidden;
+    background-color: #f0ebe2;
+    background-image: url('tracker.jpg');
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+  }
+  /* Fallback: numbered square when image not found */
+  .sprite-img.no-image {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: #bbb; font-weight: 900;
+  }
+
   .sprite-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
 
   /* Group view */
+  #groupTab { display: none; }
+  .add-member-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .add-member-row input { flex: 1; min-width: 220px; border: 2px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+  .members-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .member-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
+  .member-tag button { background: none; padding: 0; font-size: 14px; color: #fff; opacity: 0.7; }
+  .member-tag button:hover { opacity: 1; }
+
   .group-grid { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
-  thead th:first-child { text-align: left; min-width: 140px; }
-  thead th.member-col { min-width: 90px; }
+  thead th:first-child { text-align: left; min-width: 130px; }
   tbody tr:nth-child(even) { background: #fdf6ee; }
   tbody td { padding: 5px 8px; text-align: center; border-bottom: 1px solid #eee; }
   tbody td:first-child { text-align: left; font-size: 12px; color: #555; }
+  .group-sprite { width: 36px; height: 40px; border-radius: 4px; display: inline-block; vertical-align: middle; background-image: url('tracker.jpg'); background-repeat: no-repeat; }
   .cat-header td { background: #e8e0d5 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; padding: 6px 8px; }
 
-  /* Status bar */
-  .status-bar {
-    position: fixed; bottom: 12px; right: 16px;
-    background: #333; color: #fff; padding: 6px 14px;
-    border-radius: 20px; font-size: 12px; font-weight: 700;
-    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 500;
-  }
-  .status-bar.show { opacity: 1; }
-  .status-bar.error { background: var(--accent); }
-
-  @media print { .controls, .tabs, .room-banner, .name-bar, .online-bar, #setupOverlay { display: none; } }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; }
+  @media print { .controls, .tabs, .share-box, .name-bar { display: none; } }
 </style>
 </head>
 <body>
-
-<!-- SETUP OVERLAY -->
-<div id="setupOverlay">
-  <div class="setup-card">
-    <h2>Firebase Setup</h2>
-    <p>Enter your Firebase project config below. You only need to do this once — it'll be saved in your browser. All group members need to use the same config.</p>
-    <div class="setup-hint">// From Firebase console → Project settings → Your apps
-const firebaseConfig = {
-  apiKey: "...",
-  authDomain: "...",
-  databaseURL: "...",       ← required
-  projectId: "...",
-  ...
-};</div>
-    <label>API Key</label>
-    <input id="cfg_apiKey" placeholder="AIzaSy...">
-    <label>Auth Domain</label>
-    <input id="cfg_authDomain" placeholder="your-project.firebaseapp.com">
-    <label>Database URL <span style="color:var(--accent)">*</span></label>
-    <input id="cfg_databaseURL" placeholder="https://your-project-default-rtdb.firebaseio.com">
-    <label>Project ID</label>
-    <input id="cfg_projectId" placeholder="your-project-id">
-    <label>Room Code <span style="font-weight:400;color:#888">(share this with your group)</span></label>
-    <input id="cfg_room" placeholder="e.g. spritegang" style="text-transform:lowercase;">
-    <div class="setup-row">
-      <button class="green" onclick="saveConfig()" style="flex:1">Connect</button>
-      <button class="secondary" onclick="loadSavedConfig()" id="loadSavedBtn" style="display:none">Load Saved</button>
-    </div>
-    <p id="setupError" style="color:var(--accent);margin-top:10px;display:none;font-size:13px;"></p>
-  </div>
-</div>
-
-<!-- MAIN APP (hidden until connected) -->
-<div class="container" id="app" style="display:none">
+<div class="container">
   <header>
     <div class="logo">Fortnite Runners — Chapter 7 Season 3</div>
     <h1>Sprite Tracker</h1>
   </header>
 
-  <div class="room-banner">
-    Room: <span class="room-code" id="roomDisplay"></span>
-    <button class="secondary" style="font-size:11px;padding:4px 10px" onclick="copyRoomLink()">Copy Invite Link</button>
-    <button class="secondary" style="font-size:11px;padding:4px 10px" onclick="changeRoom()">Change Room</button>
-  </div>
-
   <div class="name-bar">
     <span>Your name:</span>
     <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20">
-  </div>
-
-  <div class="online-bar" id="onlineBar">
-    <span class="online-label">Online:</span>
   </div>
 
   <div class="tabs">
@@ -226,7 +119,6 @@ const firebaseConfig = {
     <button class="tab" id="tabGroup" onclick="switchTab('group')">Group View</button>
   </div>
 
-  <!-- MY CHECKLIST -->
   <div id="mineTab">
     <div class="progress-wrap">
       <span id="progressText">0 / 0</span>
@@ -238,202 +130,244 @@ const firebaseConfig = {
       <button onclick="checkAll()">Check All</button>
       <button onclick="window.print()" class="secondary">Print / PDF</button>
     </div>
+    <div class="share-box">
+      <h3>Share your progress</h3>
+      <p>Copy this link and send it to your group. They paste it into the Group View to see your collection.</p>
+      <div class="share-url">
+        <input type="text" id="shareUrl" readonly>
+        <button class="green" onclick="copyShare()">Copy Link</button>
+      </div>
+    </div>
     <div id="categories"></div>
   </div>
 
-  <!-- GROUP VIEW -->
-  <div id="groupTab" style="display:none">
+  <div id="groupTab">
+    <p style="font-size:13px;color:#666;margin-top:0;">Paste a friend's share link to add them to the group.</p>
+    <div class="add-member-row">
+      <input type="text" id="memberInput" placeholder="Paste share link here…">
+      <button onclick="addMember()" class="green">Add Member</button>
+    </div>
+    <div class="members-list" id="membersList"></div>
     <div class="group-grid">
-      <table>
-        <thead id="groupHead"></thead>
-        <tbody id="groupBody"></tbody>
-      </table>
+      <table><thead id="groupHead"></thead><tbody id="groupBody"></tbody></table>
     </div>
   </div>
 </div>
 
-<div class="status-bar" id="statusBar"></div>
+<div class="toast" id="toast"></div>
 
-<!-- Firebase SDKs -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, update, onDisconnect, serverTimestamp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+<script>
+// ── Sprite data ─────────────────────────────────────────────────────────────
+// Each sprite has: name, and [cx, cy] = center pixel in tracker.jpg (1082×1082)
+// Adjust cx/cy if your image differs in size — run cropDebug() in console to help.
+// Image assumed 1082×1082px. Each sprite crop displays at 64×70px.
 
+const IMG_W = 1082, IMG_H = 1082;
+const DISP_W = 64, DISP_H = 70;
+// We show a source region of CROP_W×CROP_H centered on sprite center
+const CROP_W = 76, CROP_H = 84;
+// Scale factor: display / crop
+const SC = DISP_W / CROP_W; // ≈ 0.842
+const BG_W = Math.round(IMG_W * SC);
+const BG_H = Math.round(IMG_H * SC);
+
+// cx, cy = approximate center of each sprite in original image pixels
 const categories = [
-  { name: "Classic Sprites",     items: ["Blue Sprite","Yellow Sprite","Pink Sprite","Purple Sprite","Silver Sprite","Teal Sprite"] },
-  { name: "Pastel Sprites",      items: ["Cream Sprite","Tan Sprite","Coral Sprite","Lavender Sprite","Magenta Sprite"] },
-  { name: "Camo Sprites",        items: ["Tan Camo","Olive Camo","Coral Camo","Purple Camo","Navy Camo"] },
-  { name: "Stone Sprites",       items: ["Brown Stone","Tan Stone","Coral Stone","Charcoal Stone","Silver Stone"] },
-  { name: "Metallic Sprites",    items: ["Gold Metallic","Rose Gold","Ruby","Amethyst","Onyx","Straw Hat"] },
-  { name: "Fire Sprites",        items: ["Orange Fire","Gold Fire","Coral Fire","Purple Fire","Pink Fire"] },
-  { name: "Spiked Sprites",      items: ["Black Spiked","Gold Spiked","Coral Spiked","Purple Spiked","Silver Spiked","Navy Spiked"] },
-  { name: "Sunglasses Sprites",  items: ["Black Shades","Gold Shades","Purple Shades","Silver Shades","Green Shades"] },
-  { name: "Demon Sprites",       items: ["Red Demon","Gold Demon","Coral Demon","Purple Demon","White Demon"] },
-  { name: "Skull Sprites",       items: ["Hooded Skull","Gold Skull","Coral Skull","Purple Skull","Silver Skull"] },
-  { name: "Ghost Sprites",       items: ["White Ghost","Gold Ghost","Coral Ghost","Purple Ghost","Teal Ghost"] },
-  { name: "Horned Sprites",      items: ["Red Horned","Gold Horned","Coral Horned","Purple Horned"] },
-  { name: "Soccer Sprites",      items: ["Soccer Star","Gold Chick","Coral Chick","Navy Chick","Pink Chick"] },
-  { name: "Crowned Sprites",     items: ["Silver Crown","Gold Crown","Coral Crown","Purple Crown","Frost Crown"] },
-  { name: "Hooded Sprites",      items: ["Black Hood","Gold Hood","Coral Hood","Purple Hood","Silver Hood"] },
-  { name: "Cosmic Sprites",      items: ["Purple Cosmic","Red Cosmic","Coral Cosmic","Silver Cosmic","Lilac Cosmic"] },
-  { name: "Hero Sprites",        items: ["Spider Blue","Spider Gold","Spider Coral","Spider Purple","Spider Green"] }
+  { name: "Classic Sprites", sprites: [
+    { name: "Blue",      cx:  49, cy: 163 },
+    { name: "Yellow",    cx: 117, cy: 163 },
+    { name: "Pink",      cx: 185, cy: 163 },
+    { name: "Purple",    cx: 253, cy: 163 },
+    { name: "Silver",    cx: 321, cy: 163 },
+    { name: "Teal",      cx: 389, cy: 163 },
+  ]},
+  { name: "Pastel Sprites", sprites: [
+    { name: "Cream",     cx: 489, cy: 163 },
+    { name: "Tan",       cx: 554, cy: 163 },
+    { name: "Coral",     cx: 619, cy: 163 },
+    { name: "Lavender",  cx: 684, cy: 163 },
+    { name: "Magenta",   cx: 749, cy: 163 },
+  ]},
+  { name: "Camo Sprites", sprites: [
+    { name: "Tan",       cx: 849, cy: 163 },
+    { name: "Olive",     cx: 909, cy: 163 },
+    { name: "Coral",     cx: 963, cy: 163 },
+    { name: "Purple",    cx: 1017, cy: 163 },
+  ]},
+  { name: "Barrel Sprites", sprites: [
+    { name: "Stone",     cx:  49, cy: 288 },
+    { name: "Tan",       cx: 117, cy: 288 },
+    { name: "Coral",     cx: 185, cy: 288 },
+    { name: "Charcoal",  cx: 253, cy: 288 },
+    { name: "Silver",    cx: 321, cy: 288 },
+    { name: "Gold",      cx: 489, cy: 288 },
+    { name: "Rose",      cx: 554, cy: 288 },
+    { name: "Ruby",      cx: 619, cy: 288 },
+    { name: "Amethyst",  cx: 684, cy: 288 },
+    { name: "Onyx",      cx: 749, cy: 288 },
+    { name: "Straw Hat", cx: 814, cy: 288 },
+  ]},
+  { name: "Angry Sprites", sprites: [
+    { name: "Orange",    cx:  49, cy: 413 },
+    { name: "Gold",      cx: 117, cy: 413 },
+    { name: "Coral",     cx: 185, cy: 413 },
+    { name: "Purple",    cx: 253, cy: 413 },
+    { name: "Pink",      cx: 321, cy: 413 },
+  ]},
+  { name: "Dark Spiked", sprites: [
+    { name: "Black",     cx: 489, cy: 413 },
+    { name: "Gold",      cx: 554, cy: 413 },
+    { name: "Coral",     cx: 619, cy: 413 },
+    { name: "Purple",    cx: 684, cy: 413 },
+    { name: "Silver",    cx: 749, cy: 413 },
+    { name: "Navy",      cx: 814, cy: 413 },
+  ]},
+  { name: "Sunglasses", sprites: [
+    { name: "Black",     cx:  49, cy: 538 },
+    { name: "Gold",      cx: 117, cy: 538 },
+    { name: "Purple",    cx: 185, cy: 538 },
+    { name: "Silver",    cx: 253, cy: 538 },
+    { name: "Green",     cx: 321, cy: 538 },
+  ]},
+  { name: "Fire Demon", sprites: [
+    { name: "Red",       cx: 489, cy: 538 },
+    { name: "Gold",      cx: 554, cy: 538 },
+    { name: "Coral",     cx: 619, cy: 538 },
+    { name: "Purple",    cx: 684, cy: 538 },
+    { name: "White",     cx: 749, cy: 538 },
+  ]},
+  { name: "Hooded Dark", sprites: [
+    { name: "Dark Hood", cx: 849, cy: 538 },
+    { name: "Gold Hood", cx: 909, cy: 538 },
+    { name: "Pink Hood", cx: 963, cy: 538 },
+    { name: "Blue Hood", cx:1017, cy: 538 },
+  ]},
+  { name: "Ghost Sprites", sprites: [
+    { name: "White",     cx:  49, cy: 663 },
+    { name: "Gold",      cx: 117, cy: 663 },
+    { name: "Coral",     cx: 185, cy: 663 },
+    { name: "Purple",    cx: 253, cy: 663 },
+    { name: "Teal",      cx: 321, cy: 663 },
+  ]},
+  { name: "Spiked Crown", sprites: [
+    { name: "Red",       cx: 489, cy: 663 },
+    { name: "Gold",      cx: 554, cy: 663 },
+    { name: "Coral",     cx: 619, cy: 663 },
+    { name: "Purple",    cx: 684, cy: 663 },
+  ]},
+  { name: "Soccer / Chick", sprites: [
+    { name: "Soccer",    cx: 789, cy: 663 },
+    { name: "Gold",      cx: 854, cy: 663 },
+    { name: "Coral",     cx: 909, cy: 663 },
+    { name: "Navy",      cx: 963, cy: 663 },
+    { name: "Pink",      cx:1017, cy: 663 },
+  ]},
+  { name: "Crowned", sprites: [
+    { name: "Silver",    cx:  49, cy: 788 },
+    { name: "Gold",      cx: 117, cy: 788 },
+    { name: "Coral",     cx: 185, cy: 788 },
+    { name: "Purple",    cx: 253, cy: 788 },
+    { name: "Frost",     cx: 321, cy: 788 },
+  ]},
+  { name: "Hooded Cloak", sprites: [
+    { name: "Black",     cx: 489, cy: 788 },
+    { name: "Gold",      cx: 554, cy: 788 },
+    { name: "Coral",     cx: 619, cy: 788 },
+    { name: "Purple",    cx: 684, cy: 788 },
+    { name: "Silver",    cx: 749, cy: 788 },
+  ]},
+  { name: "Cosmic Sprites", sprites: [
+    { name: "Purple",    cx:  49, cy: 913 },
+    { name: "Red",       cx: 117, cy: 913 },
+    { name: "Coral",     cx: 185, cy: 913 },
+    { name: "Silver",    cx: 253, cy: 913 },
+    { name: "Lilac",     cx: 321, cy: 913 },
+  ]},
+  { name: "Hero Sprites", sprites: [
+    { name: "Blue",      cx: 489, cy: 963 },
+    { name: "Gold",      cx: 554, cy: 963 },
+    { name: "Coral",     cx: 619, cy: 963 },
+    { name: "Purple",    cx: 684, cy: 963 },
+    { name: "Green",     cx: 749, cy: 963 },
+  ]},
 ];
 
-const CONFIG_KEY = "fnSpriteFirebaseConfig";
-const NAME_KEY   = "fnSpriteName";
+// Flattened list for bit encoding
+const ALL_SPRITES = [];
+categories.forEach((cat, ci) => cat.sprites.forEach((sp, si) => {
+  ALL_SPRITES.push({ cat: ci, idx: si, id: `c${ci}s${si}` });
+}));
 
-let db, room, myName, myNameSafe;
-let groupData = {};  // { memberName: { c0i0: true, ... } }
-let pendingWrites = {};
-let writeTimer = null;
-
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-
-function getSavedConfig() {
-  try { return JSON.parse(localStorage.getItem(CONFIG_KEY)); } catch(e) { return null; }
+// CSS background-position for a sprite crop centered on (cx, cy)
+function bgStyle(cx, cy) {
+  const bx = -Math.round((cx - CROP_W / 2) * SC);
+  const by = -Math.round((cy - CROP_H / 2) * SC);
+  return `background-size:${BG_W}px ${BG_H}px;background-position:${bx}px ${by}px;`;
 }
 
-window.loadSavedConfig = function() {
-  const c = getSavedConfig();
-  if (!c) return;
-  document.getElementById('cfg_apiKey').value     = c.apiKey || '';
-  document.getElementById('cfg_authDomain').value = c.authDomain || '';
-  document.getElementById('cfg_databaseURL').value= c.databaseURL || '';
-  document.getElementById('cfg_projectId').value  = c.projectId || '';
-  document.getElementById('cfg_room').value       = c.room || '';
-};
+// Group view smaller sprite
+function bgStyleSmall(cx, cy) {
+  const s = 36 / CROP_W; // display 36px
+  const bw = Math.round(IMG_W * s), bh = Math.round(IMG_H * s);
+  const bx = -Math.round((cx - CROP_W / 2) * s);
+  const by = -Math.round((cy - CROP_H / 2) * s);
+  return `background-size:${bw}px ${bh}px;background-position:${bx}px ${by}px;width:36px;height:40px;`;
+}
 
-// Show "Load Saved" if config exists
-if (getSavedConfig()) document.getElementById('loadSavedBtn').style.display = '';
+// ── State ────────────────────────────────────────────────────────────────────
+const STORAGE_KEY   = 'fnSprite3';
+const NAME_KEY      = 'fnSpriteName3';
+const MEMBERS_KEY   = 'fnSpriteMembers3';
 
-// Pre-fill room from URL param ?room=xxx
-const urlRoom = new URLSearchParams(location.search).get('room');
-if (urlRoom) document.getElementById('cfg_room').value = urlRoom;
+function loadState()   { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+function saveState(s)  { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+function getName()     { return localStorage.getItem(NAME_KEY) || ''; }
+function saveName(n)   { localStorage.setItem(NAME_KEY, n); }
+function loadMembers() { try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; } catch(e) { return []; } }
+function saveMembers(m){ localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
 
-window.saveConfig = async function() {
-  const cfg = {
-    apiKey:      document.getElementById('cfg_apiKey').value.trim(),
-    authDomain:  document.getElementById('cfg_authDomain').value.trim(),
-    databaseURL: document.getElementById('cfg_databaseURL').value.trim(),
-    projectId:   document.getElementById('cfg_projectId').value.trim(),
-  };
-  room = document.getElementById('cfg_room').value.trim().toLowerCase().replace(/\s+/g,'_') || 'default';
-
-  const errEl = document.getElementById('setupError');
-  errEl.style.display = 'none';
-
-  if (!cfg.databaseURL) { errEl.textContent = 'Database URL is required.'; errEl.style.display = ''; return; }
-
+// ── Encoding ─────────────────────────────────────────────────────────────────
+function encodeState(name, state) {
+  const bits = ALL_SPRITES.map(sp => state[sp.id] ? '1' : '0').join('');
+  return btoa(encodeURIComponent(JSON.stringify({ n: name, b: bits })));
+}
+function decodeState(encoded) {
   try {
-    const app = initializeApp(cfg, 'sprite-tracker');
-    db = getDatabase(app);
-    localStorage.setItem(CONFIG_KEY, JSON.stringify({ ...cfg, room }));
-    document.getElementById('setupOverlay').style.display = 'none';
-    document.getElementById('app').style.display = '';
-    init();
-  } catch(e) {
-    errEl.textContent = 'Connection failed: ' + e.message;
-    errEl.style.display = '';
-  }
-};
-
-window.changeRoom = function() {
-  document.getElementById('setupOverlay').style.display = 'flex';
-  loadSavedConfig();
-};
-
-// Auto-connect if config saved
-const saved = getSavedConfig();
-if (saved && !urlRoom) {
-  document.getElementById('cfg_room').value = saved.room || '';
-  (async () => {
-    try {
-      const app = initializeApp(saved, 'sprite-tracker');
-      db = getDatabase(app);
-      room = saved.room || 'default';
-      document.getElementById('setupOverlay').style.display = 'none';
-      document.getElementById('app').style.display = '';
-      init();
-    } catch(e) { /* show setup */ }
-  })();
+    const d = JSON.parse(decodeURIComponent(atob(encoded)));
+    const state = {};
+    ALL_SPRITES.forEach((sp, i) => { if (d.b[i] === '1') state[sp.id] = true; });
+    return { name: d.n, state };
+  } catch(e) { return null; }
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-
-function init() {
-  myName     = localStorage.getItem(NAME_KEY) || '';
-  myNameSafe = safeName(myName);
-
-  document.getElementById('roomDisplay').textContent = room;
-  document.getElementById('nameInput').value = myName;
-
-  document.getElementById('nameInput').addEventListener('change', e => {
-    myName     = e.target.value.trim() || 'Anonymous';
-    myNameSafe = safeName(myName);
-    localStorage.setItem(NAME_KEY, myName);
-    setupPresence();
-    flushNow();
-  });
-
-  listenGroup();
-  setupPresence();
-  renderChecklist();
+function buildShareUrl() {
+  const name = getName() || 'Anonymous';
+  const url = new URL(location.href.split('?')[0].split('#')[0]);
+  url.hash = encodeState(name, loadState());
+  return url.toString();
 }
 
-function safeName(n) {
-  return (n || 'Anonymous').replace(/[.#$\[\]\/]/g, '_');
+// ── Name ─────────────────────────────────────────────────────────────────────
+const nameInput = document.getElementById('nameInput');
+nameInput.value = getName();
+nameInput.addEventListener('input', () => { saveName(nameInput.value.trim()); updateShareUrl(); });
+
+function updateShareUrl() {
+  const el = document.getElementById('shareUrl');
+  if (el) el.value = buildShareUrl();
+}
+function copyShare() {
+  navigator.clipboard.writeText(buildShareUrl())
+    .then(() => showToast('Link copied!'))
+    .catch(() => { document.getElementById('shareUrl').select(); document.execCommand('copy'); showToast('Link copied!'); });
 }
 
-// ── FIREBASE LISTENERS ────────────────────────────────────────────────────────
-
-function listenGroup() {
-  const roomRef = ref(db, `rooms/${room}/members`);
-  onValue(roomRef, snap => {
-    groupData = snap.val() || {};
-    renderOnlineBar();
-    renderProgress();
-    renderChecklistState();
-    if (document.getElementById('groupTab').style.display !== 'none') renderGroupTable();
-  });
-}
-
-function setupPresence() {
-  if (!myNameSafe) return;
-  const presRef = ref(db, `rooms/${room}/members/${myNameSafe}/online`);
-  set(presRef, true);
-  onDisconnect(presRef).set(false);
-}
-
-// ── WRITES ───────────────────────────────────────────────────────────────────
-
-function scheduleWrite(id, val) {
-  if (!myNameSafe) return;
-  pendingWrites[id] = val;
-  clearTimeout(writeTimer);
-  writeTimer = setTimeout(flushNow, 400);
-  showStatus('Saving…');
-}
-
-function flushNow() {
-  clearTimeout(writeTimer);
-  if (!myNameSafe || Object.keys(pendingWrites).length === 0) return;
-  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
-  update(ref(db, path), pendingWrites)
-    .then(() => { showStatus('Saved ✓'); pendingWrites = {}; })
-    .catch(e => showStatus('Error: ' + e.message, true));
-}
-
-// ── CHECKLIST RENDER ──────────────────────────────────────────────────────────
-
-function mySprites() {
-  return (groupData[myNameSafe] || {}).sprites || {};
-}
-
-function renderChecklist() {
+// ── Render checklist ─────────────────────────────────────────────────────────
+function render() {
+  const state = loadState();
   const container = document.getElementById('categories');
   container.innerHTML = '';
-  const state = mySprites();
+  const imgOk = checkImgLoaded();
 
   categories.forEach((cat, ci) => {
     const section = document.createElement('div');
@@ -444,26 +378,42 @@ function renderChecklist() {
     const grid = document.createElement('div');
     grid.className = 'grid';
 
-    cat.items.forEach((item, ii) => {
-      const id = `c${ci}i${ii}`;
+    cat.sprites.forEach((sp, si) => {
+      const id = `c${ci}s${si}`;
       const wrap = document.createElement('label');
       wrap.className = 'sprite-item' + (state[id] ? ' checked' : '');
       wrap.htmlFor = id;
-      wrap.dataset.id = id;
+
+      const imgDiv = document.createElement('div');
+      imgDiv.className = 'sprite-img';
+      if (imgOk) {
+        imgDiv.setAttribute('style', bgStyle(sp.cx, sp.cy));
+        imgDiv.title = sp.name;
+      } else {
+        imgDiv.classList.add('no-image');
+        imgDiv.textContent = (si + 1);
+        imgDiv.title = sp.name + ' (add tracker.jpg)';
+      }
 
       const nameDiv = document.createElement('div');
-      nameDiv.className = 'name';
-      nameDiv.textContent = item;
+      nameDiv.style.cssText = 'font-size:10px;text-align:center;color:#666;line-height:1.2;';
+      nameDiv.textContent = sp.name;
 
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.id = id;
       cb.checked = !!state[id];
       cb.addEventListener('change', () => {
+        const s = loadState();
+        s[id] = cb.checked || undefined;
+        if (!cb.checked) delete s[id];
+        saveState(s);
         wrap.classList.toggle('checked', cb.checked);
-        scheduleWrite(id, cb.checked || null);
+        updateProgress();
+        updateShareUrl();
       });
 
+      wrap.appendChild(imgDiv);
       wrap.appendChild(nameDiv);
       wrap.appendChild(cb);
       grid.appendChild(wrap);
@@ -472,25 +422,24 @@ function renderChecklist() {
     section.appendChild(grid);
     container.appendChild(section);
   });
+
+  updateProgress();
+  updateShareUrl();
 }
 
-function renderChecklistState() {
-  const state = mySprites();
-  document.querySelectorAll('.sprite-item').forEach(wrap => {
-    const id = wrap.dataset.id;
-    if (!id) return;
-    const cb = wrap.querySelector('input');
-    if (cb && Object.keys(pendingWrites).indexOf(id) === -1) {
-      cb.checked = !!state[id];
-      wrap.classList.toggle('checked', !!state[id]);
-    }
-  });
-  renderProgress();
+let _imgOk = null;
+function checkImgLoaded() {
+  if (_imgOk !== null) return _imgOk;
+  const t = new Image();
+  t.onload  = () => { _imgOk = true;  render(); };
+  t.onerror = () => { _imgOk = false; };
+  t.src = 'tracker.jpg';
+  return false;
 }
 
-function renderProgress() {
-  const state = mySprites();
-  const total   = categories.reduce((s, c) => s + c.items.length, 0);
+function updateProgress() {
+  const state = loadState();
+  const total   = ALL_SPRITES.length;
   const checked = Object.values(state).filter(Boolean).length;
   const pct     = total ? Math.round((checked / total) * 100) : 0;
   document.getElementById('progressText').textContent = `${checked} / ${total}`;
@@ -498,59 +447,104 @@ function renderProgress() {
   document.getElementById('progressFill').style.width = `${pct}%`;
 }
 
-// ── ONLINE BAR ────────────────────────────────────────────────────────────────
-
-function renderOnlineBar() {
-  const bar = document.getElementById('onlineBar');
-  bar.innerHTML = '<span class="online-label">Online:</span>';
-  Object.entries(groupData).forEach(([name, data]) => {
-    if (!data.online) return;
-    const pill = document.createElement('span');
-    pill.className = 'member-pill' + (name === myNameSafe ? ' me' : '');
-    pill.innerHTML = `<span class="dot"></span> ${name.replace(/_/g,' ')}`;
-    bar.appendChild(pill);
-  });
+function resetAll() { if (confirm('Reset your checklist?')) { localStorage.removeItem(STORAGE_KEY); render(); } }
+function checkAll() {
+  const s = {};
+  ALL_SPRITES.forEach(sp => { s[sp.id] = true; });
+  saveState(s); render();
 }
 
-// ── GROUP TABLE ───────────────────────────────────────────────────────────────
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+window.switchTab = function(tab) {
+  document.getElementById('mineTab').style.display  = tab === 'mine'  ? '' : 'none';
+  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
+  document.getElementById('tabMine').classList.toggle('active',  tab === 'mine');
+  document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
+  if (tab === 'group') renderGroup();
+};
 
-function renderGroupTable() {
-  const members = Object.keys(groupData);
+// ── Group view ────────────────────────────────────────────────────────────────
+window.addMember = function() {
+  const input = document.getElementById('memberInput');
+  const raw = input.value.trim();
+  if (!raw) return;
+  let encoded = raw;
+  try { encoded = new URL(raw).hash.replace('#', ''); } catch(e) {}
+  const decoded = decodeState(encoded);
+  if (!decoded) { showToast('Invalid link — paste the full share URL.'); return; }
+  const members = loadMembers();
+  const idx = members.findIndex(m => m.name === decoded.name);
+  if (idx >= 0) members[idx] = { name: decoded.name, encoded };
+  else members.push({ name: decoded.name, encoded });
+  saveMembers(members);
+  input.value = '';
+  renderGroup();
+  showToast(`Added ${decoded.name}!`);
+};
+
+window.removeMember = function(name) {
+  saveMembers(loadMembers().filter(m => m.name !== name));
+  renderGroup();
+};
+
+function renderGroup() {
+  const members  = loadMembers();
+  const myName   = getName() || 'Me';
+  const myDec    = { name: myName, state: loadState() };
+  const all      = [myDec, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
+  const imgOk    = _imgOk;
+
+  // Member tags
+  const mList = document.getElementById('membersList');
+  mList.innerHTML = '';
+  members.forEach(m => {
+    const tag = document.createElement('span');
+    tag.className = 'member-tag';
+    const safeName = m.name.replace(/'/g, "\\'");
+    tag.innerHTML = `${m.name} <button onclick="removeMember('${safeName}')">✕</button>`;
+    mList.appendChild(tag);
+  });
+
+  // Table
   const head = document.getElementById('groupHead');
   const body = document.getElementById('groupBody');
-  head.innerHTML = '';
-  body.innerHTML = '';
+  head.innerHTML = ''; body.innerHTML = '';
 
   const headRow = document.createElement('tr');
-  const th0 = document.createElement('th');
-  th0.textContent = 'Sprite';
-  headRow.appendChild(th0);
-  members.forEach(m => {
-    const th = document.createElement('th');
-    th.className = 'member-col';
-    th.textContent = m.replace(/_/g,' ');
-    headRow.appendChild(th);
+  const th0 = document.createElement('th'); th0.textContent = 'Sprite'; headRow.appendChild(th0);
+  all.forEach(m => {
+    const th = document.createElement('th'); th.textContent = m.name; headRow.appendChild(th);
   });
   head.appendChild(headRow);
 
   categories.forEach((cat, ci) => {
-    const catRow = document.createElement('tr');
-    catRow.classList.add('cat-header');
-    const catTd = document.createElement('td');
-    catTd.colSpan = members.length + 1;
-    catTd.textContent = cat.name;
-    catRow.appendChild(catTd);
-    body.appendChild(catRow);
+    const catRow = document.createElement('tr'); catRow.className = 'cat-header';
+    const catTd  = document.createElement('td'); catTd.colSpan = all.length + 1; catTd.textContent = cat.name;
+    catRow.appendChild(catTd); body.appendChild(catRow);
 
-    cat.items.forEach((item, ii) => {
-      const id = `c${ci}i${ii}`;
+    cat.sprites.forEach((sp, si) => {
+      const id  = `c${ci}s${si}`;
       const row = document.createElement('tr');
+
+      // Sprite name + mini image
       const nameTd = document.createElement('td');
-      nameTd.textContent = item;
+      if (imgOk) {
+        const mini = document.createElement('div');
+        mini.className = 'group-sprite';
+        mini.setAttribute('style', bgStyleSmall(sp.cx, sp.cy));
+        mini.title = sp.name;
+        nameTd.appendChild(mini);
+        const txt = document.createTextNode(' ' + sp.name);
+        nameTd.appendChild(txt);
+      } else {
+        nameTd.textContent = sp.name;
+      }
       row.appendChild(nameTd);
-      members.forEach(m => {
+
+      all.forEach(m => {
         const td = document.createElement('td');
-        td.textContent = (groupData[m]?.sprites?.[id]) ? '✅' : '—';
+        td.style.fontSize = '18px';
+        td.textContent = m.state[id] ? '✅' : '—';
         row.appendChild(td);
       });
       body.appendChild(row);
@@ -558,46 +552,45 @@ function renderGroupTable() {
   });
 }
 
-// ── CONTROLS ──────────────────────────────────────────────────────────────────
-
-window.resetAll = function() {
-  if (!confirm('Reset your checklist?')) return;
-  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
-  set(ref(db, path), null).then(() => showStatus('Reset!'));
-};
-
-window.checkAll = function() {
-  const sprites = {};
-  categories.forEach((cat, ci) => cat.items.forEach((_, ii) => { sprites[`c${ci}i${ii}`] = true; }));
-  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
-  set(ref(db, path), sprites).then(() => showStatus('All checked!'));
-};
-
-window.switchTab = function(tab) {
-  document.getElementById('mineTab').style.display  = tab === 'mine'  ? '' : 'none';
-  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
-  document.getElementById('tabMine').classList.toggle('active',  tab === 'mine');
-  document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
-  if (tab === 'group') renderGroupTable();
-};
-
-window.copyRoomLink = function() {
-  const url = new URL(location.href.split('?')[0]);
-  url.searchParams.set('room', room);
-  navigator.clipboard.writeText(url.toString()).then(() => showToast('Invite link copied!'));
-};
-
-// ── STATUS / TOAST ────────────────────────────────────────────────────────────
-
-let statusTimer;
-function showStatus(msg, isError) {
-  const bar = document.getElementById('statusBar');
-  bar.textContent = msg;
-  bar.className = 'status-bar show' + (isError ? ' error' : '');
-  clearTimeout(statusTimer);
-  statusTimer = setTimeout(() => { bar.classList.remove('show'); }, 2000);
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
-window.showToast = showStatus;
+
+// ── Handle incoming share link ────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  const hash = location.hash.replace('#', '');
+  if (hash) {
+    const decoded = decodeState(hash);
+    if (decoded && decoded.name !== getName()) {
+      const members = loadMembers();
+      if (!members.find(m => m.name === decoded.name)) {
+        members.push({ name: decoded.name, encoded: hash });
+        saveMembers(members);
+        showToast(`Added ${decoded.name} to Group View!`);
+      }
+      switchTab('group');
+    }
+    history.replaceState(null, '', location.pathname);
+  }
+});
+
+// Debug helper: open console and run cropDebug(cx, cy) to see which region will be shown
+window.cropDebug = function(cx, cy) {
+  const c = document.createElement('canvas'); c.width = DISP_W; c.height = DISP_H;
+  const ctx = c.getContext('2d');
+  const img = new Image(); img.src = 'tracker.jpg';
+  img.onload = () => {
+    ctx.drawImage(img, cx - CROP_W/2, cy - CROP_H/2, CROP_W, CROP_H, 0, 0, DISP_W, DISP_H);
+    document.body.appendChild(c);
+  };
+};
+
+render();
 </script>
 </body>
 </html>
