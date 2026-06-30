@@ -3,22 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fortnite Runners — Sprite Tracker</title>
+<title>Fortnite Sprite Tracker</title>
 <style>
   :root {
     --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     --accent: #e94560;
     --gold: #f5b942;
     --green: #22c55e;
+    --card: #fdf6ee;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: #222; }
-  .container { max-width: 1100px; margin: 0 auto; background: #fdf6ee; border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+  body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: #222; }
+  .container { max-width: 1100px; margin: 0 auto; background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
   header { text-align: center; margin-bottom: 14px; }
-  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #666; text-transform: uppercase; }
+  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #888; text-transform: uppercase; }
   header h1 { font-size: 36px; margin: 4px 0; background: linear-gradient(90deg, var(--accent), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
+  .subtitle { font-size: 13px; color: #777; margin: 0; }
 
-  .name-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 14px; flex-wrap: wrap; }
+  .name-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
   .name-bar span { font-weight: 700; font-size: 14px; }
   .name-bar input { border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px; font-size: 14px; font-weight: 700; width: 180px; }
   .name-bar input:focus { outline: none; border-color: var(--accent); }
@@ -30,7 +32,7 @@
   .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
   .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #e5e0d8; border-radius: 8px; overflow: hidden; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.3s; }
-  #progressText { font-weight: 700; font-size: 14px; }
+  #progressText, #progressPct { font-weight: 700; font-size: 14px; }
 
   .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
   button { cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; font-size: 13px; background: var(--accent); color: #fff; transition: opacity 0.2s, transform 0.1s; }
@@ -45,38 +47,43 @@
   .share-url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .share-url input { flex: 1; min-width: 200px; border: 2px solid #ddd; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f5f5f5; }
 
-  /* Sprite grid */
-  .category { margin-bottom: 22px; }
-  .category h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin-bottom: 10px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 8px; }
+  /* Character cards */
+  .char-card { background: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; border: 2px solid #ece6dc; }
+  .char-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .char-head h2 { font-size: 18px; margin: 0; color: #2a2a3a; }
+  .char-count { font-size: 12px; font-weight: 700; color: #999; }
 
+  .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
   .sprite-item {
-    display: flex; flex-direction: column; align-items: center; gap: 5px;
-    background: #fff; border-radius: 10px; padding: 6px 4px 8px;
-    border: 2px solid #eee; cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-    position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: #faf7f1; border-radius: 12px; padding: 10px 6px 8px;
+    border: 2px solid #eee; cursor: pointer; position: relative;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.1s;
+    user-select: none;
   }
-  .sprite-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-  .sprite-item.checked { border-color: var(--accent); background: #fff0f3; }
-  .sprite-item.checked::after {
-    content: '✓'; position: absolute; top: 4px; right: 6px;
-    color: var(--accent); font-weight: 900; font-size: 14px;
+  .sprite-item:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.12); transform: translateY(-1px); }
+  .sprite-item.checked { border-color: var(--green); background: #effdf3; }
+  .sprite-item .badge {
+    position: absolute; top: 6px; right: 8px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--green); color: #fff;
+    font-size: 13px; font-weight: 900; display: none; align-items: center; justify-content: center;
+    line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
+  .sprite-item.checked .badge { display: flex; }
 
   .sprite-img {
-    width: 64px; height: 70px; border-radius: 6px; overflow: hidden;
-    background-color: #f0ebe2;
-    background-image: url('tracker.jpg');
-    background-repeat: no-repeat;
-    flex-shrink: 0;
+    width: 64px; height: 64px; object-fit: contain;
+    filter: grayscale(1) opacity(0.45); transition: filter 0.2s;
+    image-rendering: -webkit-optimize-contrast;
   }
-  /* Fallback: numbered square when image not found */
-  .sprite-img.no-image {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; color: #bbb; font-weight: 900;
+  .sprite-item.checked .sprite-img { filter: none; }
+  .sprite-fallback {
+    width: 64px; height: 64px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; background: #ece6dc;
+    color: #b3a98f; font-weight: 900; font-size: 20px;
   }
-
-  .sprite-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
+  .variant-label { font-size: 11px; font-weight: 700; color: #777; text-align: center; line-height: 1.2; }
+  .sprite-item.checked .variant-label { color: var(--green); }
 
   /* Group view */
   #groupTab { display: none; }
@@ -90,11 +97,11 @@
   .group-grid { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
-  thead th:first-child { text-align: left; min-width: 130px; }
+  thead th:first-child { text-align: left; min-width: 150px; }
   tbody tr:nth-child(even) { background: #fdf6ee; }
-  tbody td { padding: 5px 8px; text-align: center; border-bottom: 1px solid #eee; }
+  tbody td { padding: 4px 8px; text-align: center; border-bottom: 1px solid #eee; white-space: nowrap; }
   tbody td:first-child { text-align: left; font-size: 12px; color: #555; }
-  .group-sprite { width: 36px; height: 40px; border-radius: 4px; display: inline-block; vertical-align: middle; background-image: url('tracker.jpg'); background-repeat: no-repeat; }
+  .group-sprite { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; }
   .cat-header td { background: #e8e0d5 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; padding: 6px 8px; }
 
   .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
@@ -105,8 +112,9 @@
 <body>
 <div class="container">
   <header>
-    <div class="logo">Fortnite Runners — Chapter 7 Season 3</div>
+    <div class="logo">Fortnite — Creature Sprites</div>
     <h1>Sprite Tracker</h1>
+    <p class="subtitle">Check off the sprites you've collected and share your progress with friends.</p>
   </header>
 
   <div class="name-bar">
@@ -115,7 +123,7 @@
   </div>
 
   <div class="tabs">
-    <button class="tab active" id="tabMine" onclick="switchTab('mine')">My Checklist</button>
+    <button class="tab active" id="tabMine" onclick="switchTab('mine')">My Collection</button>
     <button class="tab" id="tabGroup" onclick="switchTab('group')">Group View</button>
   </div>
 
@@ -138,7 +146,7 @@
         <button class="green" onclick="copyShare()">Copy Link</button>
       </div>
     </div>
-    <div id="categories"></div>
+    <div id="characters"></div>
   </div>
 
   <div id="groupTab">
@@ -158,173 +166,57 @@
 
 <script>
 // ── Sprite data ─────────────────────────────────────────────────────────────
-// Each sprite has: name, and [cx, cy] = center pixel in tracker.jpg (1082×1082)
-// Adjust cx/cy if your image differs in size — run cropDebug() in console to help.
-// Image assumed 1082×1082px. Each sprite crop displays at 64×70px.
+// Real Fortnite creature-sprite icons served straight from GitHub.
+// Source: https://github.com/busridechampion/sprites
+const IMG_BASE = 'https://raw.githubusercontent.com/busridechampion/sprites/main/';
 
-const IMG_W = 1082, IMG_H = 1082;
-const DISP_W = 64, DISP_H = 70;
-// We show a source region of CROP_W×CROP_H centered on sprite center
-const CROP_W = 76, CROP_H = 84;
-// Scale factor: display / crop
-const SC = DISP_W / CROP_W; // ≈ 0.842
-const BG_W = Math.round(IMG_W * SC);
-const BG_H = Math.round(IMG_H * SC);
-
-// cx, cy = approximate center of each sprite in original image pixels
-const categories = [
-  { name: "Classic Sprites", sprites: [
-    { name: "Blue",      cx:  49, cy: 163 },
-    { name: "Yellow",    cx: 117, cy: 163 },
-    { name: "Pink",      cx: 185, cy: 163 },
-    { name: "Purple",    cx: 253, cy: 163 },
-    { name: "Silver",    cx: 321, cy: 163 },
-    { name: "Teal",      cx: 389, cy: 163 },
-  ]},
-  { name: "Pastel Sprites", sprites: [
-    { name: "Cream",     cx: 489, cy: 163 },
-    { name: "Tan",       cx: 554, cy: 163 },
-    { name: "Coral",     cx: 619, cy: 163 },
-    { name: "Lavender",  cx: 684, cy: 163 },
-    { name: "Magenta",   cx: 749, cy: 163 },
-  ]},
-  { name: "Camo Sprites", sprites: [
-    { name: "Tan",       cx: 849, cy: 163 },
-    { name: "Olive",     cx: 909, cy: 163 },
-    { name: "Coral",     cx: 963, cy: 163 },
-    { name: "Purple",    cx: 1017, cy: 163 },
-  ]},
-  { name: "Barrel Sprites", sprites: [
-    { name: "Stone",     cx:  49, cy: 288 },
-    { name: "Tan",       cx: 117, cy: 288 },
-    { name: "Coral",     cx: 185, cy: 288 },
-    { name: "Charcoal",  cx: 253, cy: 288 },
-    { name: "Silver",    cx: 321, cy: 288 },
-    { name: "Gold",      cx: 489, cy: 288 },
-    { name: "Rose",      cx: 554, cy: 288 },
-    { name: "Ruby",      cx: 619, cy: 288 },
-    { name: "Amethyst",  cx: 684, cy: 288 },
-    { name: "Onyx",      cx: 749, cy: 288 },
-    { name: "Straw Hat", cx: 814, cy: 288 },
-  ]},
-  { name: "Angry Sprites", sprites: [
-    { name: "Orange",    cx:  49, cy: 413 },
-    { name: "Gold",      cx: 117, cy: 413 },
-    { name: "Coral",     cx: 185, cy: 413 },
-    { name: "Purple",    cx: 253, cy: 413 },
-    { name: "Pink",      cx: 321, cy: 413 },
-  ]},
-  { name: "Dark Spiked", sprites: [
-    { name: "Black",     cx: 489, cy: 413 },
-    { name: "Gold",      cx: 554, cy: 413 },
-    { name: "Coral",     cx: 619, cy: 413 },
-    { name: "Purple",    cx: 684, cy: 413 },
-    { name: "Silver",    cx: 749, cy: 413 },
-    { name: "Navy",      cx: 814, cy: 413 },
-  ]},
-  { name: "Sunglasses", sprites: [
-    { name: "Black",     cx:  49, cy: 538 },
-    { name: "Gold",      cx: 117, cy: 538 },
-    { name: "Purple",    cx: 185, cy: 538 },
-    { name: "Silver",    cx: 253, cy: 538 },
-    { name: "Green",     cx: 321, cy: 538 },
-  ]},
-  { name: "Fire Demon", sprites: [
-    { name: "Red",       cx: 489, cy: 538 },
-    { name: "Gold",      cx: 554, cy: 538 },
-    { name: "Coral",     cx: 619, cy: 538 },
-    { name: "Purple",    cx: 684, cy: 538 },
-    { name: "White",     cx: 749, cy: 538 },
-  ]},
-  { name: "Hooded Dark", sprites: [
-    { name: "Dark Hood", cx: 849, cy: 538 },
-    { name: "Gold Hood", cx: 909, cy: 538 },
-    { name: "Pink Hood", cx: 963, cy: 538 },
-    { name: "Blue Hood", cx:1017, cy: 538 },
-  ]},
-  { name: "Ghost Sprites", sprites: [
-    { name: "White",     cx:  49, cy: 663 },
-    { name: "Gold",      cx: 117, cy: 663 },
-    { name: "Coral",     cx: 185, cy: 663 },
-    { name: "Purple",    cx: 253, cy: 663 },
-    { name: "Teal",      cx: 321, cy: 663 },
-  ]},
-  { name: "Spiked Crown", sprites: [
-    { name: "Red",       cx: 489, cy: 663 },
-    { name: "Gold",      cx: 554, cy: 663 },
-    { name: "Coral",     cx: 619, cy: 663 },
-    { name: "Purple",    cx: 684, cy: 663 },
-  ]},
-  { name: "Soccer / Chick", sprites: [
-    { name: "Soccer",    cx: 789, cy: 663 },
-    { name: "Gold",      cx: 854, cy: 663 },
-    { name: "Coral",     cx: 909, cy: 663 },
-    { name: "Navy",      cx: 963, cy: 663 },
-    { name: "Pink",      cx:1017, cy: 663 },
-  ]},
-  { name: "Crowned", sprites: [
-    { name: "Silver",    cx:  49, cy: 788 },
-    { name: "Gold",      cx: 117, cy: 788 },
-    { name: "Coral",     cx: 185, cy: 788 },
-    { name: "Purple",    cx: 253, cy: 788 },
-    { name: "Frost",     cx: 321, cy: 788 },
-  ]},
-  { name: "Hooded Cloak", sprites: [
-    { name: "Black",     cx: 489, cy: 788 },
-    { name: "Gold",      cx: 554, cy: 788 },
-    { name: "Coral",     cx: 619, cy: 788 },
-    { name: "Purple",    cx: 684, cy: 788 },
-    { name: "Silver",    cx: 749, cy: 788 },
-  ]},
-  { name: "Cosmic Sprites", sprites: [
-    { name: "Purple",    cx:  49, cy: 913 },
-    { name: "Red",       cx: 117, cy: 913 },
-    { name: "Coral",     cx: 185, cy: 913 },
-    { name: "Silver",    cx: 253, cy: 913 },
-    { name: "Lilac",     cx: 321, cy: 913 },
-  ]},
-  { name: "Hero Sprites", sprites: [
-    { name: "Blue",      cx: 489, cy: 963 },
-    { name: "Gold",      cx: 554, cy: 963 },
-    { name: "Coral",     cx: 619, cy: 963 },
-    { name: "Purple",    cx: 684, cy: 963 },
-    { name: "Green",     cx: 749, cy: 963 },
-  ]},
+// Each character lists its variants -> exact image filename.
+const CHARACTERS = [
+  { name: 'Boss',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Boss_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Boss_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Boss_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Boss_Gold_ui_L.webp' } },
+  { name: 'Burnt Peanut',variants: { Default: 'T_Icon_BR_Creature_Sprite_BurntPeanut_ui_L.webp' } },
+  { name: 'Drifter',     variants: { Default: 'T_Icon_BR_Creature_Sprite_Drifter_ui_L.webp',              Candy: 'T_Icon_BR_Creature_Sprite_Drifter_Candy_ui_L.webp',     Galaxy: 'T_Icon_BR_Creature_Sprite_Drifter_Galaxy_ui_L.webp',     Gold: 'T_Icon_BR_Creature_Sprite_Drifter_Gold_ui_L.webp' } },
+  { name: 'Earth',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Earth_Ch7S3_UI_L.webp',          Candy: 'T_Icon_BR_Creature_Sprite_Earth_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Earth_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Earth_Gold_ui_L.webp' } },
+  { name: 'Fire',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Fire_Unvault_Ch7S3_ui_L.webp',   Candy: 'T_Icon_BR_Creature_Sprite_Fire_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Fire_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Fire_Gold_ui_L.webp' } },
+  { name: 'Fishy',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Fishy_ui_L.webp',                Candy: 'T_Icon_BR_Creature_Sprite_Fishy_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Fishy_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Fishy_Gold_ui_L.webp' } },
+  { name: 'Ghost',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Ghost_Unvault_L.webp',           Candy: 'T_Icon_BR_Creature_Sprite_Ghost_Candy_L.webp',          Galaxy: 'T_Icon_BR_Creature_Sprite_Ghost_Galaxy_L.webp',          Gold: 'T_Icon_BR_Creature_Sprite_Ghost_Gold_L.webp' } },
+  { name: 'King',        variants: { Default: 'T_Icon_BR_Creature_Sprite_King_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_King_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_King_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_King_Gold_ui_L.webp' } },
+  { name: 'Punk',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Punk_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Punk_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Punk_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Punk_Gold_ui_L.webp' } },
+  { name: 'Sleepy',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Sleepy_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Sleepy_Candy_ui_L.webp',      Galaxy: 'T_Icon_BR_Creature_Sprite_Sleepy_Galaxy_ui_L.webp',      Gold: 'T_Icon_BR_Creature_Sprite_Sleepy_Gold_ui_L.webp' } },
+  { name: 'Soccer',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Soccer_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Soccer_Candy_L.webp',         Galaxy: 'T_Icon_BR_Creature_Sprite_Soccer_Galaxy_L.webp',         Gold: 'T_Icon_BR_Creature_Sprite_Soccer_Gold_L.webp' } },
+  { name: 'Water',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Water_Unvault_Ch7S3_ui_L.webp',  Candy: 'T_Icon_BR_Creature_Sprite_Water_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Water_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Water_Gold_ui_L.webp' } },
+  { name: 'Zero Point',  variants: { Default: 'T_Icon_BR_Creature_Sprite_ZeroPoint_ui_L.webp',            Candy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Candy_ui_L.webp',   Galaxy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Galaxy_ui_L.webp',   Gold: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Gold_ui_L.webp' } },
+  { name: 'Duck',        variants: { Default: 'T_Icon_BR_Duck_Default_L.webp',                            Candy: 'T_Icon_BR_Duck_Candy_L.webp',                           Galaxy: 'T_Icon_BR_Duck_Galaxy_L.webp',                           Gold: 'T_Icon_BR_Duck_Gold_L.webp' } },
+  { name: 'Grim Reaper', variants: { Default: 'T_Icon_BR_GrimReaper_Default_L.webp',                      Candy: 'T_Icon_BR_GrimReaper_Candy_L.webp',                     Galaxy: 'T_Icon_BR_GrimReaper_Galaxy_L.webp',                     Gold: 'T_Icon_BR_GrimReaper_Gold_L.webp' } },
+  { name: 'Red Demon',   variants: { Default: 'T_Icon_BR_RedDemon_Default_L.webp',                        Candy: 'T_Icon_BR_RedDemon_Candy_L.webp',                       Galaxy: 'T_Icon_BR_RedDemon_Galaxy_L.webp',                       Gold: 'T_Icon_BR_RedDemon_Gold_L.webp' } },
 ];
 
-// Flattened list for bit encoding
+const VARIANT_ORDER = ['Default', 'Candy', 'Galaxy', 'Gold'];
+
+// Flattened, stable list of every sprite (drives bit-encoding for share links).
 const ALL_SPRITES = [];
-categories.forEach((cat, ci) => cat.sprites.forEach((sp, si) => {
-  ALL_SPRITES.push({ cat: ci, idx: si, id: `c${ci}s${si}` });
-}));
+CHARACTERS.forEach((ch, ci) => {
+  VARIANT_ORDER.forEach(v => {
+    if (ch.variants[v]) {
+      ALL_SPRITES.push({ id: `c${ci}_${v}`, ci, variant: v, file: ch.variants[v], char: ch.name });
+    }
+  });
+});
+const SPRITE_INDEX = {};
+ALL_SPRITES.forEach((sp, i) => { SPRITE_INDEX[sp.id] = i; });
 
-// CSS background-position for a sprite crop centered on (cx, cy)
-function bgStyle(cx, cy) {
-  const bx = -Math.round((cx - CROP_W / 2) * SC);
-  const by = -Math.round((cy - CROP_H / 2) * SC);
-  return `background-size:${BG_W}px ${BG_H}px;background-position:${bx}px ${by}px;`;
-}
-
-// Group view smaller sprite
-function bgStyleSmall(cx, cy) {
-  const s = 36 / CROP_W; // display 36px
-  const bw = Math.round(IMG_W * s), bh = Math.round(IMG_H * s);
-  const bx = -Math.round((cx - CROP_W / 2) * s);
-  const by = -Math.round((cy - CROP_H / 2) * s);
-  return `background-size:${bw}px ${bh}px;background-position:${bx}px ${by}px;width:36px;height:40px;`;
-}
+function spriteUrl(file) { return IMG_BASE + file; }
 
 // ── State ────────────────────────────────────────────────────────────────────
-const STORAGE_KEY   = 'fnSprite3';
-const NAME_KEY      = 'fnSpriteName3';
-const MEMBERS_KEY   = 'fnSpriteMembers3';
+const STORAGE_KEY = 'fnSprite4';
+const NAME_KEY    = 'fnSpriteName4';
+const MEMBERS_KEY = 'fnSpriteMembers4';
 
-function loadState()   { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
-function saveState(s)  { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
-function getName()     { return localStorage.getItem(NAME_KEY) || ''; }
-function saveName(n)   { localStorage.setItem(NAME_KEY, n); }
-function loadMembers() { try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; } catch(e) { return []; } }
-function saveMembers(m){ localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
+function loadState()    { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+function saveState(s)   { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+function getName()      { return localStorage.getItem(NAME_KEY) || ''; }
+function saveName(n)    { localStorage.setItem(NAME_KEY, n); }
+function loadMembers()  { try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; } catch(e) { return []; } }
+function saveMembers(m) { localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
 
 // ── Encoding ─────────────────────────────────────────────────────────────────
 function encodeState(name, state) {
@@ -339,7 +231,6 @@ function decodeState(encoded) {
     return { name: d.n, state };
   } catch(e) { return null; }
 }
-
 function buildShareUrl() {
   const name = getName() || 'Anonymous';
   const url = new URL(location.href.split('?')[0].split('#')[0]);
@@ -363,91 +254,99 @@ function copyShare() {
 }
 
 // ── Render checklist ─────────────────────────────────────────────────────────
+function makeSprite(sp, state) {
+  const item = document.createElement('div');
+  item.className = 'sprite-item' + (state[sp.id] ? ' checked' : '');
+  item.title = `${sp.char} — ${sp.variant}`;
+
+  const img = document.createElement('img');
+  img.className = 'sprite-img';
+  img.loading = 'lazy';
+  img.alt = `${sp.char} ${sp.variant}`;
+  img.src = spriteUrl(sp.file);
+  img.onerror = () => {
+    const fb = document.createElement('div');
+    fb.className = 'sprite-fallback';
+    fb.textContent = sp.variant[0];
+    img.replaceWith(fb);
+  };
+
+  const badge = document.createElement('div');
+  badge.className = 'badge';
+  badge.textContent = '✓';
+
+  const label = document.createElement('div');
+  label.className = 'variant-label';
+  label.textContent = sp.variant;
+
+  item.appendChild(img);
+  item.appendChild(badge);
+  item.appendChild(label);
+  item.addEventListener('click', () => {
+    const s = loadState();
+    if (s[sp.id]) delete s[sp.id]; else s[sp.id] = true;
+    saveState(s);
+    item.classList.toggle('checked', !!s[sp.id]);
+    updateCharCount(sp.ci);
+    updateProgress();
+    updateShareUrl();
+  });
+  return item;
+}
+
+function updateCharCount(ci) {
+  const el = document.getElementById(`count-${ci}`);
+  if (!el) return;
+  const state = loadState();
+  const sprites = ALL_SPRITES.filter(sp => sp.ci === ci);
+  const have = sprites.filter(sp => state[sp.id]).length;
+  el.textContent = `${have} / ${sprites.length}`;
+}
+
 function render() {
   const state = loadState();
-  const container = document.getElementById('categories');
+  const container = document.getElementById('characters');
   container.innerHTML = '';
-  const imgOk = checkImgLoaded();
 
-  categories.forEach((cat, ci) => {
-    const section = document.createElement('div');
-    section.className = 'category';
+  CHARACTERS.forEach((ch, ci) => {
+    const card = document.createElement('div');
+    card.className = 'char-card';
+
+    const head = document.createElement('div');
+    head.className = 'char-head';
     const h2 = document.createElement('h2');
-    h2.textContent = cat.name;
-    section.appendChild(h2);
+    h2.textContent = ch.name;
+    const count = document.createElement('span');
+    count.className = 'char-count';
+    count.id = `count-${ci}`;
+    head.appendChild(h2);
+    head.appendChild(count);
+    card.appendChild(head);
+
     const grid = document.createElement('div');
-    grid.className = 'grid';
+    grid.className = 'variant-grid';
+    ALL_SPRITES.filter(sp => sp.ci === ci).forEach(sp => grid.appendChild(makeSprite(sp, state)));
+    card.appendChild(grid);
 
-    cat.sprites.forEach((sp, si) => {
-      const id = `c${ci}s${si}`;
-      const wrap = document.createElement('label');
-      wrap.className = 'sprite-item' + (state[id] ? ' checked' : '');
-      wrap.htmlFor = id;
-
-      const imgDiv = document.createElement('div');
-      imgDiv.className = 'sprite-img';
-      if (imgOk) {
-        imgDiv.setAttribute('style', bgStyle(sp.cx, sp.cy));
-        imgDiv.title = sp.name;
-      } else {
-        imgDiv.classList.add('no-image');
-        imgDiv.textContent = (si + 1);
-        imgDiv.title = sp.name + ' (add tracker.jpg)';
-      }
-
-      const nameDiv = document.createElement('div');
-      nameDiv.style.cssText = 'font-size:10px;text-align:center;color:#666;line-height:1.2;';
-      nameDiv.textContent = sp.name;
-
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.id = id;
-      cb.checked = !!state[id];
-      cb.addEventListener('change', () => {
-        const s = loadState();
-        s[id] = cb.checked || undefined;
-        if (!cb.checked) delete s[id];
-        saveState(s);
-        wrap.classList.toggle('checked', cb.checked);
-        updateProgress();
-        updateShareUrl();
-      });
-
-      wrap.appendChild(imgDiv);
-      wrap.appendChild(nameDiv);
-      wrap.appendChild(cb);
-      grid.appendChild(wrap);
-    });
-
-    section.appendChild(grid);
-    container.appendChild(section);
+    container.appendChild(card);
+    updateCharCount(ci);
   });
 
   updateProgress();
   updateShareUrl();
 }
 
-let _imgOk = null;
-function checkImgLoaded() {
-  if (_imgOk !== null) return _imgOk;
-  const t = new Image();
-  t.onload  = () => { _imgOk = true;  render(); };
-  t.onerror = () => { _imgOk = false; };
-  t.src = 'tracker.jpg';
-  return false;
-}
-
 function updateProgress() {
   const state = loadState();
   const total   = ALL_SPRITES.length;
-  const checked = Object.values(state).filter(Boolean).length;
+  const checked = ALL_SPRITES.filter(sp => state[sp.id]).length;
   const pct     = total ? Math.round((checked / total) * 100) : 0;
   document.getElementById('progressText').textContent = `${checked} / ${total}`;
   document.getElementById('progressPct').textContent  = `${pct}%`;
   document.getElementById('progressFill').style.width = `${pct}%`;
 }
 
-function resetAll() { if (confirm('Reset your checklist?')) { localStorage.removeItem(STORAGE_KEY); render(); } }
+function resetAll() { if (confirm('Reset your collection?')) { localStorage.removeItem(STORAGE_KEY); render(); } }
 function checkAll() {
   const s = {};
   ALL_SPRITES.forEach(sp => { s[sp.id] = true; });
@@ -488,11 +387,10 @@ window.removeMember = function(name) {
 };
 
 function renderGroup() {
-  const members  = loadMembers();
-  const myName   = getName() || 'Me';
-  const myDec    = { name: myName, state: loadState() };
-  const all      = [myDec, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
-  const imgOk    = _imgOk;
+  const members = loadMembers();
+  const myName  = getName() || 'Me';
+  const myDec   = { name: myName, state: loadState() };
+  const all     = [myDec, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
 
   // Member tags
   const mList = document.getElementById('membersList');
@@ -501,7 +399,7 @@ function renderGroup() {
     const tag = document.createElement('span');
     tag.className = 'member-tag';
     const safeName = m.name.replace(/'/g, "\\'");
-    tag.innerHTML = `${m.name} <button onclick="removeMember('${safeName}')">✕</button>`;
+    tag.innerHTML = `${escapeHtml(m.name)} <button onclick="removeMember('${safeName}')">✕</button>`;
     mList.appendChild(tag);
   });
 
@@ -512,39 +410,31 @@ function renderGroup() {
 
   const headRow = document.createElement('tr');
   const th0 = document.createElement('th'); th0.textContent = 'Sprite'; headRow.appendChild(th0);
-  all.forEach(m => {
-    const th = document.createElement('th'); th.textContent = m.name; headRow.appendChild(th);
-  });
+  all.forEach(m => { const th = document.createElement('th'); th.textContent = m.name; headRow.appendChild(th); });
   head.appendChild(headRow);
 
-  categories.forEach((cat, ci) => {
+  CHARACTERS.forEach((ch, ci) => {
     const catRow = document.createElement('tr'); catRow.className = 'cat-header';
-    const catTd  = document.createElement('td'); catTd.colSpan = all.length + 1; catTd.textContent = cat.name;
+    const catTd  = document.createElement('td'); catTd.colSpan = all.length + 1; catTd.textContent = ch.name;
     catRow.appendChild(catTd); body.appendChild(catRow);
 
-    cat.sprites.forEach((sp, si) => {
-      const id  = `c${ci}s${si}`;
+    ALL_SPRITES.filter(sp => sp.ci === ci).forEach(sp => {
       const row = document.createElement('tr');
-
-      // Sprite name + mini image
       const nameTd = document.createElement('td');
-      if (imgOk) {
-        const mini = document.createElement('div');
-        mini.className = 'group-sprite';
-        mini.setAttribute('style', bgStyleSmall(sp.cx, sp.cy));
-        mini.title = sp.name;
-        nameTd.appendChild(mini);
-        const txt = document.createTextNode(' ' + sp.name);
-        nameTd.appendChild(txt);
-      } else {
-        nameTd.textContent = sp.name;
-      }
+      const mini = document.createElement('img');
+      mini.className = 'group-sprite';
+      mini.loading = 'lazy';
+      mini.alt = sp.variant;
+      mini.src = spriteUrl(sp.file);
+      mini.onerror = () => { mini.replaceWith(document.createTextNode('')); };
+      nameTd.appendChild(mini);
+      nameTd.appendChild(document.createTextNode(' ' + sp.variant));
       row.appendChild(nameTd);
 
       all.forEach(m => {
         const td = document.createElement('td');
-        td.style.fontSize = '18px';
-        td.textContent = m.state[id] ? '✅' : '—';
+        td.style.fontSize = '16px';
+        td.textContent = m.state[sp.id] ? '✅' : '—';
         row.appendChild(td);
       });
       body.appendChild(row);
@@ -552,7 +442,9 @@ function renderGroup() {
   });
 }
 
-// ── Toast ─────────────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -578,17 +470,6 @@ window.addEventListener('load', () => {
     history.replaceState(null, '', location.pathname);
   }
 });
-
-// Debug helper: open console and run cropDebug(cx, cy) to see which region will be shown
-window.cropDebug = function(cx, cy) {
-  const c = document.createElement('canvas'); c.width = DISP_W; c.height = DISP_H;
-  const ctx = c.getContext('2d');
-  const img = new Image(); img.src = 'tracker.jpg';
-  img.onload = () => {
-    ctx.drawImage(img, cx - CROP_W/2, cy - CROP_H/2, CROP_W, CROP_H, 0, 0, DISP_W, DISP_H);
-    document.body.appendChild(c);
-  };
-};
 
 render();
 </script>
