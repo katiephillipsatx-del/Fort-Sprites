@@ -10,6 +10,7 @@
     --accent: #e94560;
     --gold: #f5b942;
     --green: #22c55e;
+    --card: #fdf6ee;
   }
   * { box-sizing: border-box; }
   body {
@@ -20,33 +21,83 @@
     padding: 20px;
     color: #222;
   }
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: #fdf6ee;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+  /* ── SETUP OVERLAY ── */
+  #setupOverlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; padding: 20px;
   }
-  header { text-align: center; margin-bottom: 16px; }
-  header .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #666; text-transform: uppercase; }
+  .setup-card {
+    background: var(--card); border-radius: 16px; padding: 32px;
+    max-width: 520px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .setup-card h2 { margin: 0 0 6px; font-size: 22px; }
+  .setup-card p { margin: 0 0 16px; font-size: 13px; color: #666; line-height: 1.5; }
+  .setup-card label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+  .setup-card input {
+    width: 100%; border: 2px solid #ddd; border-radius: 8px;
+    padding: 8px 12px; font-size: 13px; margin-bottom: 12px;
+    font-family: monospace;
+  }
+  .setup-card input:focus { outline: none; border-color: var(--accent); }
+  .setup-hint {
+    background: #f0ebe2; border-radius: 8px; padding: 12px;
+    font-size: 12px; font-family: monospace; margin-bottom: 16px;
+    white-space: pre-wrap; color: #555; line-height: 1.6;
+  }
+  .setup-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ── MAIN APP ── */
+  .container {
+    max-width: 1200px; margin: 0 auto;
+    background: var(--card); border-radius: 16px;
+    padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  header { text-align: center; margin-bottom: 14px; }
+  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #666; text-transform: uppercase; }
   header h1 {
     font-size: 36px; margin: 4px 0;
     background: linear-gradient(90deg, var(--accent), var(--gold));
     -webkit-background-clip: text; background-clip: text; color: transparent;
-    font-weight: 900; letter-spacing: 1px;
+    font-weight: 900;
   }
 
-  /* Name banner */
+  .room-banner {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: #f0ebe2; border-radius: 10px; padding: 8px 16px;
+    margin-bottom: 14px; flex-wrap: wrap; font-size: 13px;
+  }
+  .room-code {
+    font-family: monospace; font-weight: 800; font-size: 18px;
+    color: var(--accent); letter-spacing: 2px;
+  }
+
   .name-bar {
     display: flex; align-items: center; gap: 10px; justify-content: center;
     margin-bottom: 14px; flex-wrap: wrap;
   }
+  .name-bar span { font-weight: 700; font-size: 14px; }
   .name-bar input {
     border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px;
     font-size: 14px; font-weight: 700; width: 180px;
   }
   .name-bar input:focus { outline: none; border-color: var(--accent); }
+
+  /* Online members */
+  .online-bar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-bottom: 16px; justify-content: center; min-height: 30px;
+  }
+  .online-label { font-size: 12px; font-weight: 700; color: #888; }
+  .member-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #fff; border: 2px solid #eee; border-radius: 20px;
+    padding: 3px 10px; font-size: 12px; font-weight: 700;
+  }
+  .member-pill.me { border-color: var(--accent); color: var(--accent); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; }
 
   /* Tabs */
   .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e5e0d8; }
@@ -58,7 +109,8 @@
 
   /* Progress */
   .progress-wrap {
-    display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px; flex-wrap: wrap; justify-content: center;
   }
   .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #e5e0d8; border-radius: 8px; overflow: hidden; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.3s; }
@@ -75,8 +127,9 @@
   button:active { transform: scale(0.96); }
   button.secondary { background: #555; }
   button.green { background: var(--green); }
+  button:disabled { opacity: 0.4; cursor: default; }
 
-  /* Checklist grid */
+  /* Checklist */
   .category { margin-bottom: 22px; }
   .category h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #555; border-bottom: 2px solid var(--gold); padding-bottom: 4px; margin-bottom: 10px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
@@ -89,69 +142,83 @@
   .sprite-item .name { font-size: 10px; text-align: center; color: #666; line-height: 1.2; min-height: 24px; }
   .sprite-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
 
-  /* Share panel */
-  .share-box {
-    background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 20px;
-    border: 2px solid #e5e0d8;
-  }
-  .share-box h3 { margin: 0 0 10px; font-size: 15px; }
-  .share-url {
-    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-  }
-  .share-url input {
-    flex: 1; min-width: 200px; border: 2px solid #ddd; border-radius: 8px;
-    padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f5f5f5;
-  }
-
   /* Group view */
-  #groupTab { display: none; }
-  .add-member-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-  .add-member-row input {
-    flex: 1; min-width: 220px; border: 2px solid #ddd; border-radius: 8px;
-    padding: 8px 12px; font-size: 13px;
-  }
-  .group-grid {
-    overflow-x: auto;
-  }
+  .group-grid { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; }
-  thead th.sprite-col { text-align: left; font-weight: 600; width: 140px; }
+  thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
+  thead th:first-child { text-align: left; min-width: 140px; }
   thead th.member-col { min-width: 90px; }
   tbody tr:nth-child(even) { background: #fdf6ee; }
   tbody td { padding: 5px 8px; text-align: center; border-bottom: 1px solid #eee; }
-  tbody td.sprite-name { text-align: left; font-size: 12px; color: #555; }
-  .check-cell { font-size: 16px; }
+  tbody td:first-child { text-align: left; font-size: 12px; color: #555; }
   .cat-header td { background: #e8e0d5 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; padding: 6px 8px; }
-  .member-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--accent); color: #fff; border-radius: 20px;
-    padding: 3px 10px; font-size: 12px; font-weight: 700;
-  }
-  .member-tag button { background: none; padding: 0; font-size: 14px; line-height: 1; color: #fff; opacity: 0.7; }
-  .member-tag button:hover { opacity: 1; }
-  .members-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 
-  .toast {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-    background: #333; color: #fff; padding: 10px 20px; border-radius: 8px;
-    font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s;
-    pointer-events: none; z-index: 999;
+  /* Status bar */
+  .status-bar {
+    position: fixed; bottom: 12px; right: 16px;
+    background: #333; color: #fff; padding: 6px 14px;
+    border-radius: 20px; font-size: 12px; font-weight: 700;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 500;
   }
-  .toast.show { opacity: 1; }
+  .status-bar.show { opacity: 1; }
+  .status-bar.error { background: var(--accent); }
 
-  @media print { .controls, .tabs, .share-box, .name-bar { display: none; } }
+  @media print { .controls, .tabs, .room-banner, .name-bar, .online-bar, #setupOverlay { display: none; } }
 </style>
 </head>
 <body>
-<div class="container">
+
+<!-- SETUP OVERLAY -->
+<div id="setupOverlay">
+  <div class="setup-card">
+    <h2>Firebase Setup</h2>
+    <p>Enter your Firebase project config below. You only need to do this once — it'll be saved in your browser. All group members need to use the same config.</p>
+    <div class="setup-hint">// From Firebase console → Project settings → Your apps
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  databaseURL: "...",       ← required
+  projectId: "...",
+  ...
+};</div>
+    <label>API Key</label>
+    <input id="cfg_apiKey" placeholder="AIzaSy...">
+    <label>Auth Domain</label>
+    <input id="cfg_authDomain" placeholder="your-project.firebaseapp.com">
+    <label>Database URL <span style="color:var(--accent)">*</span></label>
+    <input id="cfg_databaseURL" placeholder="https://your-project-default-rtdb.firebaseio.com">
+    <label>Project ID</label>
+    <input id="cfg_projectId" placeholder="your-project-id">
+    <label>Room Code <span style="font-weight:400;color:#888">(share this with your group)</span></label>
+    <input id="cfg_room" placeholder="e.g. spritegang" style="text-transform:lowercase;">
+    <div class="setup-row">
+      <button class="green" onclick="saveConfig()" style="flex:1">Connect</button>
+      <button class="secondary" onclick="loadSavedConfig()" id="loadSavedBtn" style="display:none">Load Saved</button>
+    </div>
+    <p id="setupError" style="color:var(--accent);margin-top:10px;display:none;font-size:13px;"></p>
+  </div>
+</div>
+
+<!-- MAIN APP (hidden until connected) -->
+<div class="container" id="app" style="display:none">
   <header>
     <div class="logo">Fortnite Runners — Chapter 7 Season 3</div>
     <h1>Sprite Tracker</h1>
   </header>
 
+  <div class="room-banner">
+    Room: <span class="room-code" id="roomDisplay"></span>
+    <button class="secondary" style="font-size:11px;padding:4px 10px" onclick="copyRoomLink()">Copy Invite Link</button>
+    <button class="secondary" style="font-size:11px;padding:4px 10px" onclick="changeRoom()">Change Room</button>
+  </div>
+
   <div class="name-bar">
-    <span style="font-weight:700;font-size:14px;">Your name:</span>
+    <span>Your name:</span>
     <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20">
+  </div>
+
+  <div class="online-bar" id="onlineBar">
+    <span class="online-label">Online:</span>
   </div>
 
   <div class="tabs">
@@ -171,27 +238,13 @@
       <button onclick="checkAll()">Check All</button>
       <button onclick="window.print()" class="secondary">Print / PDF</button>
     </div>
-    <div class="share-box">
-      <h3>Share your progress link</h3>
-      <p style="margin:0 0 10px;font-size:13px;color:#666;">Copy and send this link — friends can paste it into the Group View to see your collection.</p>
-      <div class="share-url">
-        <input type="text" id="shareUrl" readonly>
-        <button class="green" onclick="copyShare()">Copy Link</button>
-      </div>
-    </div>
     <div id="categories"></div>
   </div>
 
   <!-- GROUP VIEW -->
-  <div id="groupTab">
-    <p style="font-size:13px;color:#666;margin-top:0;">Paste a friend's share link below to add them to the group view.</p>
-    <div class="add-member-row">
-      <input type="text" id="memberInput" placeholder="Paste share link here…">
-      <button onclick="addMember()" class="green">Add Member</button>
-    </div>
-    <div class="members-list" id="membersList"></div>
+  <div id="groupTab" style="display:none">
     <div class="group-grid">
-      <table id="groupTable">
+      <table>
         <thead id="groupHead"></thead>
         <tbody id="groupBody"></tbody>
       </table>
@@ -199,120 +252,189 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="status-bar" id="statusBar"></div>
 
-<script>
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, update, onDisconnect, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
 const categories = [
-  { name: "Classic Sprites", items: ["Blue Sprite","Yellow Sprite","Pink Sprite","Purple Sprite","Silver Sprite","Teal Sprite"] },
-  { name: "Pastel Sprites", items: ["Cream Sprite","Tan Sprite","Coral Sprite","Lavender Sprite","Magenta Sprite"] },
-  { name: "Camo Sprites", items: ["Tan Camo","Olive Camo","Coral Camo","Purple Camo","Navy Camo"] },
-  { name: "Stone Sprites", items: ["Brown Stone","Tan Stone","Coral Stone","Charcoal Stone","Silver Stone"] },
-  { name: "Metallic Sprites", items: ["Gold Metallic","Rose Gold","Ruby","Amethyst","Onyx","Straw Hat"] },
-  { name: "Fire Sprites", items: ["Orange Fire","Gold Fire","Coral Fire","Purple Fire","Pink Fire"] },
-  { name: "Spiked Sprites", items: ["Black Spiked","Gold Spiked","Coral Spiked","Purple Spiked","Silver Spiked","Navy Spiked"] },
-  { name: "Sunglasses Sprites", items: ["Black Shades","Gold Shades","Purple Shades","Silver Shades","Green Shades"] },
-  { name: "Demon Sprites", items: ["Red Demon","Gold Demon","Coral Demon","Purple Demon","White Demon"] },
-  { name: "Skull Sprites", items: ["Hooded Skull","Gold Skull","Coral Skull","Purple Skull","Silver Skull"] },
-  { name: "Ghost Sprites", items: ["White Ghost","Gold Ghost","Coral Ghost","Purple Ghost","Teal Ghost"] },
-  { name: "Horned Sprites", items: ["Red Horned","Gold Horned","Coral Horned","Purple Horned"] },
-  { name: "Soccer Sprites", items: ["Soccer Star","Gold Chick","Coral Chick","Navy Chick","Pink Chick"] },
-  { name: "Crowned Sprites", items: ["Silver Crown","Gold Crown","Coral Crown","Purple Crown","Frost Crown"] },
-  { name: "Hooded Sprites", items: ["Black Hood","Gold Hood","Coral Hood","Purple Hood","Silver Hood"] },
-  { name: "Cosmic Sprites", items: ["Purple Cosmic","Red Cosmic","Coral Cosmic","Silver Cosmic","Lilac Cosmic"] },
-  { name: "Hero Sprites", items: ["Spider Blue","Spider Gold","Spider Coral","Spider Purple","Spider Green"] }
+  { name: "Classic Sprites",     items: ["Blue Sprite","Yellow Sprite","Pink Sprite","Purple Sprite","Silver Sprite","Teal Sprite"] },
+  { name: "Pastel Sprites",      items: ["Cream Sprite","Tan Sprite","Coral Sprite","Lavender Sprite","Magenta Sprite"] },
+  { name: "Camo Sprites",        items: ["Tan Camo","Olive Camo","Coral Camo","Purple Camo","Navy Camo"] },
+  { name: "Stone Sprites",       items: ["Brown Stone","Tan Stone","Coral Stone","Charcoal Stone","Silver Stone"] },
+  { name: "Metallic Sprites",    items: ["Gold Metallic","Rose Gold","Ruby","Amethyst","Onyx","Straw Hat"] },
+  { name: "Fire Sprites",        items: ["Orange Fire","Gold Fire","Coral Fire","Purple Fire","Pink Fire"] },
+  { name: "Spiked Sprites",      items: ["Black Spiked","Gold Spiked","Coral Spiked","Purple Spiked","Silver Spiked","Navy Spiked"] },
+  { name: "Sunglasses Sprites",  items: ["Black Shades","Gold Shades","Purple Shades","Silver Shades","Green Shades"] },
+  { name: "Demon Sprites",       items: ["Red Demon","Gold Demon","Coral Demon","Purple Demon","White Demon"] },
+  { name: "Skull Sprites",       items: ["Hooded Skull","Gold Skull","Coral Skull","Purple Skull","Silver Skull"] },
+  { name: "Ghost Sprites",       items: ["White Ghost","Gold Ghost","Coral Ghost","Purple Ghost","Teal Ghost"] },
+  { name: "Horned Sprites",      items: ["Red Horned","Gold Horned","Coral Horned","Purple Horned"] },
+  { name: "Soccer Sprites",      items: ["Soccer Star","Gold Chick","Coral Chick","Navy Chick","Pink Chick"] },
+  { name: "Crowned Sprites",     items: ["Silver Crown","Gold Crown","Coral Crown","Purple Crown","Frost Crown"] },
+  { name: "Hooded Sprites",      items: ["Black Hood","Gold Hood","Coral Hood","Purple Hood","Silver Hood"] },
+  { name: "Cosmic Sprites",      items: ["Purple Cosmic","Red Cosmic","Coral Cosmic","Silver Cosmic","Lilac Cosmic"] },
+  { name: "Hero Sprites",        items: ["Spider Blue","Spider Gold","Spider Coral","Spider Purple","Spider Green"] }
 ];
 
-const STORAGE_KEY = "fortniteSpriteTracker_v2";
-const NAME_KEY = "fortniteSpriteTrackerName";
-const MEMBERS_KEY = "fortniteSpriteTrackerMembers";
+const CONFIG_KEY = "fnSpriteFirebaseConfig";
+const NAME_KEY   = "fnSpriteName";
 
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-  catch(e) { return {}; }
-}
-function saveState(s) { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
-function getName() { return localStorage.getItem(NAME_KEY) || ""; }
-function saveName(n) { localStorage.setItem(NAME_KEY, n); }
-function loadMembers() {
-  try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; }
-  catch(e) { return []; }
-}
-function saveMembers(m) { localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
+let db, room, myName, myNameSafe;
+let groupData = {};  // { memberName: { c0i0: true, ... } }
+let pendingWrites = {};
+let writeTimer = null;
 
-function encodeState(name, state) {
-  const bits = [];
-  categories.forEach((cat, ci) => {
-    cat.items.forEach((item, ii) => {
-      bits.push(state[`c${ci}-i${ii}`] ? '1' : '0');
-    });
-  });
-  const data = { n: name, b: bits.join('') };
-  return btoa(encodeURIComponent(JSON.stringify(data)));
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+
+function getSavedConfig() {
+  try { return JSON.parse(localStorage.getItem(CONFIG_KEY)); } catch(e) { return null; }
 }
 
-function decodeState(encoded) {
+window.loadSavedConfig = function() {
+  const c = getSavedConfig();
+  if (!c) return;
+  document.getElementById('cfg_apiKey').value     = c.apiKey || '';
+  document.getElementById('cfg_authDomain').value = c.authDomain || '';
+  document.getElementById('cfg_databaseURL').value= c.databaseURL || '';
+  document.getElementById('cfg_projectId').value  = c.projectId || '';
+  document.getElementById('cfg_room').value       = c.room || '';
+};
+
+// Show "Load Saved" if config exists
+if (getSavedConfig()) document.getElementById('loadSavedBtn').style.display = '';
+
+// Pre-fill room from URL param ?room=xxx
+const urlRoom = new URLSearchParams(location.search).get('room');
+if (urlRoom) document.getElementById('cfg_room').value = urlRoom;
+
+window.saveConfig = async function() {
+  const cfg = {
+    apiKey:      document.getElementById('cfg_apiKey').value.trim(),
+    authDomain:  document.getElementById('cfg_authDomain').value.trim(),
+    databaseURL: document.getElementById('cfg_databaseURL').value.trim(),
+    projectId:   document.getElementById('cfg_projectId').value.trim(),
+  };
+  room = document.getElementById('cfg_room').value.trim().toLowerCase().replace(/\s+/g,'_') || 'default';
+
+  const errEl = document.getElementById('setupError');
+  errEl.style.display = 'none';
+
+  if (!cfg.databaseURL) { errEl.textContent = 'Database URL is required.'; errEl.style.display = ''; return; }
+
   try {
-    const data = JSON.parse(decodeURIComponent(atob(encoded)));
-    const state = {};
-    let idx = 0;
-    categories.forEach((cat, ci) => {
-      cat.items.forEach((item, ii) => {
-        state[`c${ci}-i${ii}`] = data.b[idx++] === '1';
-      });
-    });
-    return { name: data.n, state };
-  } catch(e) { return null; }
+    const app = initializeApp(cfg, 'sprite-tracker');
+    db = getDatabase(app);
+    localStorage.setItem(CONFIG_KEY, JSON.stringify({ ...cfg, room }));
+    document.getElementById('setupOverlay').style.display = 'none';
+    document.getElementById('app').style.display = '';
+    init();
+  } catch(e) {
+    errEl.textContent = 'Connection failed: ' + e.message;
+    errEl.style.display = '';
+  }
+};
+
+window.changeRoom = function() {
+  document.getElementById('setupOverlay').style.display = 'flex';
+  loadSavedConfig();
+};
+
+// Auto-connect if config saved
+const saved = getSavedConfig();
+if (saved && !urlRoom) {
+  document.getElementById('cfg_room').value = saved.room || '';
+  (async () => {
+    try {
+      const app = initializeApp(saved, 'sprite-tracker');
+      db = getDatabase(app);
+      room = saved.room || 'default';
+      document.getElementById('setupOverlay').style.display = 'none';
+      document.getElementById('app').style.display = '';
+      init();
+    } catch(e) { /* show setup */ }
+  })();
 }
 
-function buildShareUrl() {
-  const name = getName() || "Anonymous";
-  const encoded = encodeState(name, loadState());
-  const url = new URL(window.location.href.split('?')[0].split('#')[0]);
-  url.hash = encoded;
-  return url.toString();
+// ── INIT ─────────────────────────────────────────────────────────────────────
+
+function init() {
+  myName     = localStorage.getItem(NAME_KEY) || '';
+  myNameSafe = safeName(myName);
+
+  document.getElementById('roomDisplay').textContent = room;
+  document.getElementById('nameInput').value = myName;
+
+  document.getElementById('nameInput').addEventListener('change', e => {
+    myName     = e.target.value.trim() || 'Anonymous';
+    myNameSafe = safeName(myName);
+    localStorage.setItem(NAME_KEY, myName);
+    setupPresence();
+    flushNow();
+  });
+
+  listenGroup();
+  setupPresence();
+  renderChecklist();
 }
 
-function updateShareUrl() {
-  const el = document.getElementById('shareUrl');
-  if (el) el.value = buildShareUrl();
+function safeName(n) {
+  return (n || 'Anonymous').replace(/[.#$\[\]\/]/g, '_');
 }
 
-function copyShare() {
-  const url = buildShareUrl();
-  navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => {
-    document.getElementById('shareUrl').select();
-    document.execCommand('copy');
-    showToast('Link copied!');
+// ── FIREBASE LISTENERS ────────────────────────────────────────────────────────
+
+function listenGroup() {
+  const roomRef = ref(db, `rooms/${room}/members`);
+  onValue(roomRef, snap => {
+    groupData = snap.val() || {};
+    renderOnlineBar();
+    renderProgress();
+    renderChecklistState();
+    if (document.getElementById('groupTab').style.display !== 'none') renderGroupTable();
   });
 }
 
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+function setupPresence() {
+  if (!myNameSafe) return;
+  const presRef = ref(db, `rooms/${room}/members/${myNameSafe}/online`);
+  set(presRef, true);
+  onDisconnect(presRef).set(false);
 }
 
-// Name input
-const nameInput = document.getElementById('nameInput');
-nameInput.value = getName();
-nameInput.addEventListener('input', () => {
-  saveName(nameInput.value.trim());
-  updateShareUrl();
-});
+// ── WRITES ───────────────────────────────────────────────────────────────────
 
-function switchTab(tab) {
-  document.getElementById('mineTab').style.display = tab === 'mine' ? '' : 'none';
-  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
-  document.getElementById('tabMine').classList.toggle('active', tab === 'mine');
-  document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
-  if (tab === 'group') renderGroup();
+function scheduleWrite(id, val) {
+  if (!myNameSafe) return;
+  pendingWrites[id] = val;
+  clearTimeout(writeTimer);
+  writeTimer = setTimeout(flushNow, 400);
+  showStatus('Saving…');
 }
 
-function render() {
-  const state = loadState();
+function flushNow() {
+  clearTimeout(writeTimer);
+  if (!myNameSafe || Object.keys(pendingWrites).length === 0) return;
+  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
+  update(ref(db, path), pendingWrites)
+    .then(() => { showStatus('Saved ✓'); pendingWrites = {}; })
+    .catch(e => showStatus('Error: ' + e.message, true));
+}
+
+// ── CHECKLIST RENDER ──────────────────────────────────────────────────────────
+
+function mySprites() {
+  return (groupData[myNameSafe] || {}).sprites || {};
+}
+
+function renderChecklist() {
   const container = document.getElementById('categories');
   container.innerHTML = '';
+  const state = mySprites();
+
   categories.forEach((cat, ci) => {
     const section = document.createElement('div');
     section.className = 'category';
@@ -321,145 +443,114 @@ function render() {
     section.appendChild(h2);
     const grid = document.createElement('div');
     grid.className = 'grid';
+
     cat.items.forEach((item, ii) => {
-      const id = `c${ci}-i${ii}`;
+      const id = `c${ci}i${ii}`;
       const wrap = document.createElement('label');
       wrap.className = 'sprite-item' + (state[id] ? ' checked' : '');
       wrap.htmlFor = id;
+      wrap.dataset.id = id;
+
       const nameDiv = document.createElement('div');
       nameDiv.className = 'name';
       nameDiv.textContent = item;
+
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.id = id;
       cb.checked = !!state[id];
       cb.addEventListener('change', () => {
-        const s = loadState();
-        s[id] = cb.checked;
-        saveState(s);
         wrap.classList.toggle('checked', cb.checked);
-        updateProgress();
-        updateShareUrl();
+        scheduleWrite(id, cb.checked || null);
       });
+
       wrap.appendChild(nameDiv);
       wrap.appendChild(cb);
       grid.appendChild(wrap);
     });
+
     section.appendChild(grid);
     container.appendChild(section);
   });
-  updateProgress();
-  updateShareUrl();
 }
 
-function updateProgress() {
-  const state = loadState();
-  const total = categories.reduce((s, c) => s + c.items.length, 0);
+function renderChecklistState() {
+  const state = mySprites();
+  document.querySelectorAll('.sprite-item').forEach(wrap => {
+    const id = wrap.dataset.id;
+    if (!id) return;
+    const cb = wrap.querySelector('input');
+    if (cb && Object.keys(pendingWrites).indexOf(id) === -1) {
+      cb.checked = !!state[id];
+      wrap.classList.toggle('checked', !!state[id]);
+    }
+  });
+  renderProgress();
+}
+
+function renderProgress() {
+  const state = mySprites();
+  const total   = categories.reduce((s, c) => s + c.items.length, 0);
   const checked = Object.values(state).filter(Boolean).length;
-  const pct = total ? Math.round((checked / total) * 100) : 0;
+  const pct     = total ? Math.round((checked / total) * 100) : 0;
   document.getElementById('progressText').textContent = `${checked} / ${total}`;
-  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressPct').textContent  = `${pct}%`;
   document.getElementById('progressFill').style.width = `${pct}%`;
 }
 
-function resetAll() {
-  if (confirm('Reset all checkboxes?')) { localStorage.removeItem(STORAGE_KEY); render(); }
-}
-function checkAll() {
-  const s = {};
-  categories.forEach((cat, ci) => cat.items.forEach((_, ii) => { s[`c${ci}-i${ii}`] = true; }));
-  saveState(s);
-  render();
-}
+// ── ONLINE BAR ────────────────────────────────────────────────────────────────
 
-// GROUP VIEW
-function addMember() {
-  const input = document.getElementById('memberInput');
-  const raw = input.value.trim();
-  if (!raw) return;
-
-  let encoded = raw;
-  try {
-    const url = new URL(raw);
-    encoded = url.hash.replace('#', '');
-  } catch(e) {}
-
-  const decoded = decodeState(encoded);
-  if (!decoded) { showToast('Invalid link — make sure you pasted the full share URL.'); return; }
-
-  const members = loadMembers();
-  const existing = members.findIndex(m => m.name === decoded.name);
-  if (existing >= 0) members[existing] = { name: decoded.name, encoded };
-  else members.push({ name: decoded.name, encoded });
-  saveMembers(members);
-  input.value = '';
-  renderGroup();
-  showToast(`Added ${decoded.name}!`);
-}
-
-function removeMember(name) {
-  const members = loadMembers().filter(m => m.name !== name);
-  saveMembers(members);
-  renderGroup();
-}
-
-function renderGroup() {
-  const members = loadMembers();
-  // Always include self
-  const myName = getName() || 'Me';
-  const myDecoded = { name: myName, state: loadState() };
-  const allMembers = [myDecoded, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
-
-  // Render member tags
-  const membersList = document.getElementById('membersList');
-  membersList.innerHTML = '';
-  members.forEach(m => {
-    const tag = document.createElement('span');
-    tag.className = 'member-tag';
-    tag.innerHTML = `${m.name} <button onclick="removeMember('${m.name.replace(/'/g,"\\'")}')">✕</button>`;
-    membersList.appendChild(tag);
+function renderOnlineBar() {
+  const bar = document.getElementById('onlineBar');
+  bar.innerHTML = '<span class="online-label">Online:</span>';
+  Object.entries(groupData).forEach(([name, data]) => {
+    if (!data.online) return;
+    const pill = document.createElement('span');
+    pill.className = 'member-pill' + (name === myNameSafe ? ' me' : '');
+    pill.innerHTML = `<span class="dot"></span> ${name.replace(/_/g,' ')}`;
+    bar.appendChild(pill);
   });
+}
 
-  // Build table
+// ── GROUP TABLE ───────────────────────────────────────────────────────────────
+
+function renderGroupTable() {
+  const members = Object.keys(groupData);
   const head = document.getElementById('groupHead');
   const body = document.getElementById('groupBody');
   head.innerHTML = '';
   body.innerHTML = '';
 
   const headRow = document.createElement('tr');
-  const spriteHeader = document.createElement('th');
-  spriteHeader.className = 'sprite-col';
-  spriteHeader.textContent = 'Sprite';
-  headRow.appendChild(spriteHeader);
-  allMembers.forEach(m => {
+  const th0 = document.createElement('th');
+  th0.textContent = 'Sprite';
+  headRow.appendChild(th0);
+  members.forEach(m => {
     const th = document.createElement('th');
     th.className = 'member-col';
-    th.textContent = m.name;
+    th.textContent = m.replace(/_/g,' ');
     headRow.appendChild(th);
   });
   head.appendChild(headRow);
 
   categories.forEach((cat, ci) => {
     const catRow = document.createElement('tr');
+    catRow.classList.add('cat-header');
     const catTd = document.createElement('td');
-    catTd.className = 'sprite-name';
-    catTd.colSpan = allMembers.length + 1;
+    catTd.colSpan = members.length + 1;
     catTd.textContent = cat.name;
     catRow.appendChild(catTd);
-    catRow.classList.add('cat-header');
     body.appendChild(catRow);
 
     cat.items.forEach((item, ii) => {
-      const id = `c${ci}-i${ii}`;
+      const id = `c${ci}i${ii}`;
       const row = document.createElement('tr');
       const nameTd = document.createElement('td');
-      nameTd.className = 'sprite-name';
       nameTd.textContent = item;
       row.appendChild(nameTd);
-      allMembers.forEach(m => {
+      members.forEach(m => {
         const td = document.createElement('td');
-        td.className = 'check-cell';
-        td.textContent = m.state[id] ? '✅' : '—';
+        td.textContent = (groupData[m]?.sprites?.[id]) ? '✅' : '—';
         row.appendChild(td);
       });
       body.appendChild(row);
@@ -467,30 +558,46 @@ function renderGroup() {
   });
 }
 
-// Check URL hash on load — if contains encoded state, offer to load it
-window.addEventListener('load', () => {
-  const hash = window.location.hash.replace('#', '');
-  if (hash) {
-    const decoded = decodeState(hash);
-    if (decoded) {
-      // Add as member automatically if not self
-      const myName = getName();
-      if (decoded.name !== myName) {
-        const members = loadMembers();
-        if (!members.find(m => m.name === decoded.name)) {
-          members.push({ name: decoded.name, encoded: hash });
-          saveMembers(members);
-          showToast(`Added ${decoded.name} to Group View!`);
-        }
-        switchTab('group');
-        renderGroup();
-      }
-      history.replaceState(null, '', window.location.pathname);
-    }
-  }
-});
+// ── CONTROLS ──────────────────────────────────────────────────────────────────
 
-render();
+window.resetAll = function() {
+  if (!confirm('Reset your checklist?')) return;
+  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
+  set(ref(db, path), null).then(() => showStatus('Reset!'));
+};
+
+window.checkAll = function() {
+  const sprites = {};
+  categories.forEach((cat, ci) => cat.items.forEach((_, ii) => { sprites[`c${ci}i${ii}`] = true; }));
+  const path = `rooms/${room}/members/${myNameSafe}/sprites`;
+  set(ref(db, path), sprites).then(() => showStatus('All checked!'));
+};
+
+window.switchTab = function(tab) {
+  document.getElementById('mineTab').style.display  = tab === 'mine'  ? '' : 'none';
+  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
+  document.getElementById('tabMine').classList.toggle('active',  tab === 'mine');
+  document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
+  if (tab === 'group') renderGroupTable();
+};
+
+window.copyRoomLink = function() {
+  const url = new URL(location.href.split('?')[0]);
+  url.searchParams.set('room', room);
+  navigator.clipboard.writeText(url.toString()).then(() => showToast('Invite link copied!'));
+};
+
+// ── STATUS / TOAST ────────────────────────────────────────────────────────────
+
+let statusTimer;
+function showStatus(msg, isError) {
+  const bar = document.getElementById('statusBar');
+  bar.textContent = msg;
+  bar.className = 'status-bar show' + (isError ? ' error' : '');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(() => { bar.classList.remove('show'); }, 2000);
+}
+window.showToast = showStatus;
 </script>
 </body>
 </html>
