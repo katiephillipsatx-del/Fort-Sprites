@@ -6,107 +6,133 @@
 <title>Fortnite Sprite Tracker</title>
 <style>
   :root {
-    --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    --accent: #e94560;
-    --gold: #f5b942;
-    --green: #22c55e;
-    --card: #fdf6ee;
+    --bg: linear-gradient(135deg, #2a095f 0%, #3d02bd 55%, #4c51f7 100%);
+    --accent: #9d4dbb;
+    --accent2: #e25bff;
+    --gold: #f3af19;
+    --green: #319236;
+    --blue: #4c51f7;
+    --lav: #ddb1ff;
+    --card: #fbefff;
+    --ink: #2a095f;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: #222; }
-  .container { max-width: 1100px; margin: 0 auto; background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+  body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: var(--ink); }
+  .container { max-width: 1100px; margin: 0 auto; background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(42,9,95,0.5); }
   header { text-align: center; margin-bottom: 14px; }
-  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #888; text-transform: uppercase; }
-  header h1 { font-size: 36px; margin: 4px 0; background: linear-gradient(90deg, var(--accent), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
-  .subtitle { font-size: 13px; color: #777; margin: 0; }
+  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #9d8aba; text-transform: uppercase; }
+  header h1 { font-size: 36px; margin: 4px 0; background: linear-gradient(90deg, var(--accent2), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
+  .subtitle { font-size: 13px; color: #7d6b95; margin: 0; }
 
   .name-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
   .name-bar span { font-weight: 700; font-size: 14px; }
-  .name-bar input { border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px; font-size: 14px; font-weight: 700; width: 180px; }
+  .name-bar input { border: 2px solid var(--lav); border-radius: 8px; padding: 6px 12px; font-size: 14px; font-weight: 700; width: 180px; }
   .name-bar input:focus { outline: none; border-color: var(--accent); }
 
-  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e5e0d8; }
-  .tab { padding: 8px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 700; font-size: 14px; border: none; background: transparent; color: #888; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid var(--lav); }
+  .tab { padding: 8px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 700; font-size: 14px; border: none; background: transparent; color: #9a86b3; }
   .tab.active { background: var(--accent); color: #fff; }
 
-  .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
-  .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #e5e0d8; border-radius: 8px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.3s; }
+  .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; justify-content: center; }
+  .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #ece0f5; border-radius: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--gold)); width: 0%; transition: width 0.3s; }
   #progressText, #progressPct { font-weight: 700; font-size: 14px; }
+  .master-wrap { text-align: center; margin-bottom: 18px; }
+  #masteredText { font-weight: 800; font-size: 14px; color: #b07d0a; background: #fff7e6; border: 1px solid #f3df9e; border-radius: 20px; padding: 4px 14px; display: inline-block; }
 
-  .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; flex-wrap: wrap; }
   button { cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; font-size: 13px; background: var(--accent); color: #fff; transition: opacity 0.2s, transform 0.1s; }
   button:hover { opacity: 0.85; }
   button:active { transform: scale(0.96); }
-  button.secondary { background: #555; }
+  button.secondary { background: #6b5b8a; }
   button.green { background: var(--green); }
 
-  .share-box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 2px solid #e5e0d8; }
+  .filter-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-bottom: 18px; flex-wrap: wrap; }
+  .filter-bar span { font-size: 13px; font-weight: 700; color: #6b5b8a; }
+  .filter-btn { background: #ece0f5; color: #6b5b8a; }
+  .filter-btn.active { background: var(--accent); color: #fff; }
+  .sprite-item.hidden, .char-card.hidden { display: none; }
+  .empty-msg { text-align: center; color: #9a86b3; font-size: 14px; font-weight: 700; padding: 30px 0; }
+
+  .share-box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 2px solid var(--lav); }
   .share-box h3 { margin: 0 0 8px; font-size: 15px; }
-  .share-box p { margin: 0 0 10px; font-size: 13px; color: #666; }
+  .share-box p { margin: 0 0 10px; font-size: 13px; color: #7d6b95; }
   .share-url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .share-url input { flex: 1; min-width: 200px; border: 2px solid #ddd; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f5f5f5; }
+  .share-url input { flex: 1; min-width: 200px; border: 2px solid var(--lav); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f6eefb; }
 
   /* Character cards */
-  .char-card { background: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; border: 2px solid #ece6dc; }
+  .char-card { background: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; border: 2px solid var(--lav); }
   .char-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
-  .char-head h2 { font-size: 18px; margin: 0; color: #2a2a3a; }
-  .char-count { font-size: 12px; font-weight: 700; color: #999; }
+  .char-head h2 { font-size: 18px; margin: 0; color: var(--ink); }
+  .char-count { font-size: 12px; font-weight: 700; color: #a594bd; }
 
   .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
   .sprite-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
-    background: #faf7f1; border-radius: 12px; padding: 10px 6px 8px;
-    border: 2px solid #eee; cursor: pointer; position: relative;
+    background: #fbf6ff; border-radius: 12px; padding: 10px 6px 8px;
+    border: 2px solid #ece0f5; cursor: pointer; position: relative;
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.1s;
     user-select: none;
   }
-  .sprite-item:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.12); transform: translateY(-1px); }
-  .sprite-item.checked { border-color: var(--green); background: #effdf3; }
-  .sprite-item .badge {
+  .sprite-item:hover { box-shadow: 0 3px 10px rgba(157,77,187,0.25); transform: translateY(-1px); }
+  .sprite-item.checked { border-color: var(--green); background: #eafaef; }
+  .sprite-item.mastered { border-color: var(--gold); background: #fff7e6; box-shadow: 0 0 0 2px rgba(243,175,25,0.35); }
+
+  .check-badge {
     position: absolute; top: 6px; right: 8px; width: 20px; height: 20px;
     border-radius: 50%; background: var(--green); color: #fff;
     font-size: 13px; font-weight: 900; display: none; align-items: center; justify-content: center;
     line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
-  .sprite-item.checked .badge { display: flex; }
+  .sprite-item.checked .check-badge, .sprite-item.mastered .check-badge { display: flex; }
+
+  .star-btn {
+    position: absolute; top: 6px; left: 8px; width: 22px; height: 22px;
+    border-radius: 50%; background: #fff; border: 1px solid #e0d0ee; color: #c9b8de;
+    font-size: 13px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; padding: 0; line-height: 1; box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+  .star-btn:hover { color: var(--gold); border-color: var(--gold); opacity: 1; }
+  .sprite-item.mastered .star-btn { background: var(--gold); color: #fff; border-color: var(--gold); }
 
   .sprite-img {
     width: 64px; height: 64px; object-fit: contain;
     filter: grayscale(1) opacity(0.45); transition: filter 0.2s;
     image-rendering: -webkit-optimize-contrast;
   }
-  .sprite-item.checked .sprite-img { filter: none; }
+  .sprite-item.checked .sprite-img, .sprite-item.mastered .sprite-img { filter: none; }
   .sprite-fallback {
     width: 64px; height: 64px; border-radius: 8px; display: flex;
-    align-items: center; justify-content: center; background: #ece6dc;
-    color: #b3a98f; font-weight: 900; font-size: 20px;
+    align-items: center; justify-content: center; background: #ece0f5;
+    color: #b0a0c8; font-weight: 900; font-size: 20px;
   }
-  .variant-label { font-size: 11px; font-weight: 700; color: #777; text-align: center; line-height: 1.2; }
+  .variant-label { font-size: 11px; font-weight: 700; color: #8a78a3; text-align: center; line-height: 1.2; }
   .sprite-item.checked .variant-label { color: var(--green); }
+  .sprite-item.mastered .variant-label { color: #b07d0a; }
 
   /* Group view */
   #groupTab { display: none; }
   .add-member-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .add-member-row input { flex: 1; min-width: 220px; border: 2px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+  .add-member-row input { flex: 1; min-width: 220px; border: 2px solid var(--lav); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
   .members-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
   .member-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
   .member-tag button { background: none; padding: 0; font-size: 14px; color: #fff; opacity: 0.7; }
   .member-tag button:hover { opacity: 1; }
+  .legend { font-size: 12px; color: #7d6b95; margin-bottom: 10px; }
 
   .group-grid { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
+  thead th { background: #f0e6fa; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
   thead th:first-child { text-align: left; min-width: 150px; }
-  tbody tr:nth-child(even) { background: #fdf6ee; }
+  tbody tr:nth-child(even) { background: #faf4ff; }
   tbody td { padding: 4px 8px; text-align: center; border-bottom: 1px solid #eee; white-space: nowrap; }
-  tbody td:first-child { text-align: left; font-size: 12px; color: #555; }
+  tbody td:first-child { text-align: left; font-size: 12px; color: #5a4a78; }
   .group-sprite { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; }
-  .cat-header td { background: #e8e0d5 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; padding: 6px 8px; }
+  .cat-header td { background: #e7d8f7 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #5a4a78; padding: 6px 8px; }
 
-  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
   .toast.show { opacity: 1; }
-  @media print { .controls, .tabs, .share-box, .name-bar { display: none; } }
+  @media print { .controls, .tabs, .share-box, .name-bar, .filter-bar, .star-btn { display: none; } }
 </style>
 </head>
 <body>
@@ -114,7 +140,7 @@
   <header>
     <div class="logo">Fortnite — Creature Sprites</div>
     <h1>Sprite Tracker</h1>
-    <p class="subtitle">Check off the sprites you've collected and share your progress with friends.</p>
+    <p class="subtitle">Tap a sprite to mark it owned, tap the ★ to mark it mastered, then share your progress with friends.</p>
   </header>
 
   <div class="name-bar">
@@ -133,9 +159,12 @@
       <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
       <span id="progressPct">0%</span>
     </div>
+    <div class="master-wrap"><span id="masteredText">★ Mastered 0 / 0</span></div>
+
     <div class="controls">
       <button onclick="resetAll()" class="secondary">Reset All</button>
-      <button onclick="checkAll()">Check All</button>
+      <button onclick="checkAll()">Own All</button>
+      <button onclick="masterAll()">Master All</button>
       <button onclick="window.print()" class="secondary">Print / PDF</button>
     </div>
     <div class="share-box">
@@ -146,16 +175,25 @@
         <button class="green" onclick="copyShare()">Copy Link</button>
       </div>
     </div>
+    <div class="filter-bar">
+      <span>Show:</span>
+      <button class="filter-btn active" id="filterAll" onclick="setFilter('all')">All</button>
+      <button class="filter-btn" id="filterOwned" onclick="setFilter('owned')">Owned</button>
+      <button class="filter-btn" id="filterUnowned" onclick="setFilter('unowned')">Unowned</button>
+      <button class="filter-btn" id="filterMastered" onclick="setFilter('mastered')">Mastered</button>
+    </div>
     <div id="characters"></div>
+    <div class="empty-msg" id="emptyMsg" style="display:none;"></div>
   </div>
 
   <div id="groupTab">
-    <p style="font-size:13px;color:#666;margin-top:0;">Paste a friend's share link to add them to the group.</p>
+    <p style="font-size:13px;color:#7d6b95;margin-top:0;">Paste a friend's share link to add them to the group.</p>
     <div class="add-member-row">
       <input type="text" id="memberInput" placeholder="Paste share link here…">
       <button onclick="addMember()" class="green">Add Member</button>
     </div>
     <div class="members-list" id="membersList"></div>
+    <div class="legend">⭐ = Mastered &nbsp;·&nbsp; ✅ = Owned &nbsp;·&nbsp; — = Not owned</div>
     <div class="group-grid">
       <table><thead id="groupHead"></thead><tbody id="groupBody"></tbody></table>
     </div>
@@ -171,26 +209,30 @@
 const IMG_BASE = 'https://raw.githubusercontent.com/busridechampion/sprites/main/';
 
 // Each character lists its variants -> exact image filename.
+// (Filenames keep Epic's internal asset names; display names follow the live game.)
 const CHARACTERS = [
-  { name: 'Boss',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Boss_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Boss_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Boss_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Boss_Gold_ui_L.webp' } },
+  { name: 'Boss',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Boss_ui_L.webp',                 Gummy: 'T_Icon_BR_Creature_Sprite_Boss_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Boss_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Boss_Gold_ui_L.webp' } },
   { name: 'Burnt Peanut',variants: { Default: 'T_Icon_BR_Creature_Sprite_BurntPeanut_ui_L.webp' } },
-  { name: 'Drifter',     variants: { Default: 'T_Icon_BR_Creature_Sprite_Drifter_ui_L.webp',              Candy: 'T_Icon_BR_Creature_Sprite_Drifter_Candy_ui_L.webp',     Galaxy: 'T_Icon_BR_Creature_Sprite_Drifter_Galaxy_ui_L.webp',     Gold: 'T_Icon_BR_Creature_Sprite_Drifter_Gold_ui_L.webp' } },
-  { name: 'Earth',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Earth_Ch7S3_UI_L.webp',          Candy: 'T_Icon_BR_Creature_Sprite_Earth_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Earth_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Earth_Gold_ui_L.webp' } },
-  { name: 'Fire',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Fire_Unvault_Ch7S3_ui_L.webp',   Candy: 'T_Icon_BR_Creature_Sprite_Fire_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Fire_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Fire_Gold_ui_L.webp' } },
-  { name: 'Fishy',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Fishy_ui_L.webp',                Candy: 'T_Icon_BR_Creature_Sprite_Fishy_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Fishy_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Fishy_Gold_ui_L.webp' } },
-  { name: 'Ghost',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Ghost_Unvault_L.webp',           Candy: 'T_Icon_BR_Creature_Sprite_Ghost_Candy_L.webp',          Galaxy: 'T_Icon_BR_Creature_Sprite_Ghost_Galaxy_L.webp',          Gold: 'T_Icon_BR_Creature_Sprite_Ghost_Gold_L.webp' } },
-  { name: 'King',        variants: { Default: 'T_Icon_BR_Creature_Sprite_King_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_King_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_King_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_King_Gold_ui_L.webp' } },
-  { name: 'Punk',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Punk_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Punk_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Punk_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Punk_Gold_ui_L.webp' } },
-  { name: 'Sleepy',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Sleepy_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Sleepy_Candy_ui_L.webp',      Galaxy: 'T_Icon_BR_Creature_Sprite_Sleepy_Galaxy_ui_L.webp',      Gold: 'T_Icon_BR_Creature_Sprite_Sleepy_Gold_ui_L.webp' } },
-  { name: 'Soccer',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Soccer_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Soccer_Candy_L.webp',         Galaxy: 'T_Icon_BR_Creature_Sprite_Soccer_Galaxy_L.webp',         Gold: 'T_Icon_BR_Creature_Sprite_Soccer_Gold_L.webp' } },
-  { name: 'Water',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Water_Unvault_Ch7S3_ui_L.webp',  Candy: 'T_Icon_BR_Creature_Sprite_Water_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Water_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Water_Gold_ui_L.webp' } },
-  { name: 'Zero Point',  variants: { Default: 'T_Icon_BR_Creature_Sprite_ZeroPoint_ui_L.webp',            Candy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Candy_ui_L.webp',   Galaxy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Galaxy_ui_L.webp',   Gold: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Gold_ui_L.webp' } },
-  { name: 'Duck',        variants: { Default: 'T_Icon_BR_Duck_Default_L.webp',                            Candy: 'T_Icon_BR_Duck_Candy_L.webp',                           Galaxy: 'T_Icon_BR_Duck_Galaxy_L.webp',                           Gold: 'T_Icon_BR_Duck_Gold_L.webp' } },
-  { name: 'Grim Reaper', variants: { Default: 'T_Icon_BR_GrimReaper_Default_L.webp',                      Candy: 'T_Icon_BR_GrimReaper_Candy_L.webp',                     Galaxy: 'T_Icon_BR_GrimReaper_Galaxy_L.webp',                     Gold: 'T_Icon_BR_GrimReaper_Gold_L.webp' } },
-  { name: 'Red Demon',   variants: { Default: 'T_Icon_BR_RedDemon_Default_L.webp',                        Candy: 'T_Icon_BR_RedDemon_Candy_L.webp',                       Galaxy: 'T_Icon_BR_RedDemon_Galaxy_L.webp',                       Gold: 'T_Icon_BR_RedDemon_Gold_L.webp' } },
+  { name: 'Aura',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Drifter_ui_L.webp',              Gummy: 'T_Icon_BR_Creature_Sprite_Drifter_Candy_ui_L.webp',     Galaxy: 'T_Icon_BR_Creature_Sprite_Drifter_Galaxy_ui_L.webp',     Gold: 'T_Icon_BR_Creature_Sprite_Drifter_Gold_ui_L.webp' } },
+  { name: 'Earth',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Earth_Ch7S3_UI_L.webp',          Gummy: 'T_Icon_BR_Creature_Sprite_Earth_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Earth_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Earth_Gold_ui_L.webp' } },
+  { name: 'Fire',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Fire_Unvault_Ch7S3_ui_L.webp',   Gummy: 'T_Icon_BR_Creature_Sprite_Fire_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Fire_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Fire_Gold_ui_L.webp' } },
+  { name: 'Fishy',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Fishy_ui_L.webp',                Gummy: 'T_Icon_BR_Creature_Sprite_Fishy_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Fishy_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Fishy_Gold_ui_L.webp' } },
+  { name: 'Ghost',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Ghost_Unvault_L.webp',           Gummy: 'T_Icon_BR_Creature_Sprite_Ghost_Candy_L.webp',          Galaxy: 'T_Icon_BR_Creature_Sprite_Ghost_Galaxy_L.webp',          Gold: 'T_Icon_BR_Creature_Sprite_Ghost_Gold_L.webp' } },
+  { name: 'King',        variants: { Default: 'T_Icon_BR_Creature_Sprite_King_ui_L.webp',                 Gummy: 'T_Icon_BR_Creature_Sprite_King_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_King_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_King_Gold_ui_L.webp' } },
+  { name: 'Punk',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Punk_ui_L.webp',                 Gummy: 'T_Icon_BR_Creature_Sprite_Punk_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Punk_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Punk_Gold_ui_L.webp' } },
+  { name: 'Dream',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Sleepy_ui_L.webp',               Gummy: 'T_Icon_BR_Creature_Sprite_Sleepy_Candy_ui_L.webp',      Galaxy: 'T_Icon_BR_Creature_Sprite_Sleepy_Galaxy_ui_L.webp',      Gold: 'T_Icon_BR_Creature_Sprite_Sleepy_Gold_ui_L.webp' } },
+  { name: 'Striker',     variants: { Default: 'T_Icon_BR_Creature_Sprite_Soccer_ui_L.webp',               Gummy: 'T_Icon_BR_Creature_Sprite_Soccer_Candy_L.webp',         Galaxy: 'T_Icon_BR_Creature_Sprite_Soccer_Galaxy_L.webp',         Gold: 'T_Icon_BR_Creature_Sprite_Soccer_Gold_L.webp' } },
+  { name: 'Water',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Water_Unvault_Ch7S3_ui_L.webp',  Gummy: 'T_Icon_BR_Creature_Sprite_Water_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Water_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Water_Gold_ui_L.webp' } },
+  { name: 'Zero Point',  variants: { Default: 'T_Icon_BR_Creature_Sprite_ZeroPoint_ui_L.webp',            Gummy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Candy_ui_L.webp',   Galaxy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Galaxy_ui_L.webp',   Gold: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Gold_ui_L.webp' } },
+  { name: 'Duck',        variants: { Default: 'T_Icon_BR_Duck_Default_L.webp',                            Gummy: 'T_Icon_BR_Duck_Candy_L.webp',                           Galaxy: 'T_Icon_BR_Duck_Galaxy_L.webp',                           Gold: 'T_Icon_BR_Duck_Gold_L.webp' } },
+  { name: 'Grim',        variants: { Default: 'T_Icon_BR_GrimReaper_Default_L.webp',                      Gummy: 'T_Icon_BR_GrimReaper_Candy_L.webp',                     Galaxy: 'T_Icon_BR_GrimReaper_Galaxy_L.webp',                     Gold: 'T_Icon_BR_GrimReaper_Gold_L.webp' } },
+  { name: 'Demon',       variants: { Default: 'T_Icon_BR_RedDemon_Default_L.webp',                        Gummy: 'T_Icon_BR_RedDemon_Candy_L.webp',                       Galaxy: 'T_Icon_BR_RedDemon_Galaxy_L.webp',                       Gold: 'T_Icon_BR_RedDemon_Gold_L.webp' } },
 ];
 
-const VARIANT_ORDER = ['Default', 'Candy', 'Galaxy', 'Gold'];
+const VARIANT_ORDER = ['Default', 'Gummy', 'Galaxy', 'Gold'];
+
+// Display characters alphabetically by name.
+CHARACTERS.sort((a, b) => a.name.localeCompare(b.name));
 
 // Flattened, stable list of every sprite (drives bit-encoding for share links).
 const ALL_SPRITES = [];
@@ -201,34 +243,40 @@ CHARACTERS.forEach((ch, ci) => {
     }
   });
 });
-const SPRITE_INDEX = {};
-ALL_SPRITES.forEach((sp, i) => { SPRITE_INDEX[sp.id] = i; });
 
 function spriteUrl(file) { return IMG_BASE + file; }
 
 // ── State ────────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'fnSprite4';
-const NAME_KEY    = 'fnSpriteName4';
-const MEMBERS_KEY = 'fnSpriteMembers4';
+// State shape: { owned: { id: true }, mastered: { id: true } }. Mastered implies owned.
+const STORAGE_KEY = 'fnSprite5';
+const NAME_KEY    = 'fnSpriteName5';
+const MEMBERS_KEY = 'fnSpriteMembers5';
 
-function loadState()    { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+function loadState() {
+  try { const s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && s.owned) return { owned: s.owned || {}, mastered: s.mastered || {} }; } catch(e) {}
+  return { owned: {}, mastered: {} };
+}
 function saveState(s)   { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
 function getName()      { return localStorage.getItem(NAME_KEY) || ''; }
 function saveName(n)    { localStorage.setItem(NAME_KEY, n); }
 function loadMembers()  { try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; } catch(e) { return []; } }
 function saveMembers(m) { localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
 
-// ── Encoding ─────────────────────────────────────────────────────────────────
+// ── Encoding (owned + mastered bitstrings) ────────────────────────────────────
 function encodeState(name, state) {
-  const bits = ALL_SPRITES.map(sp => state[sp.id] ? '1' : '0').join('');
-  return btoa(encodeURIComponent(JSON.stringify({ n: name, b: bits })));
+  const b = ALL_SPRITES.map(sp => state.owned[sp.id]    ? '1' : '0').join('');
+  const m = ALL_SPRITES.map(sp => state.mastered[sp.id] ? '1' : '0').join('');
+  return btoa(encodeURIComponent(JSON.stringify({ n: name, b, m })));
 }
 function decodeState(encoded) {
   try {
     const d = JSON.parse(decodeURIComponent(atob(encoded)));
-    const state = {};
-    ALL_SPRITES.forEach((sp, i) => { if (d.b[i] === '1') state[sp.id] = true; });
-    return { name: d.n, state };
+    const owned = {}, mastered = {};
+    ALL_SPRITES.forEach((sp, i) => {
+      if (d.b && d.b[i] === '1') owned[sp.id] = true;
+      if (d.m && d.m[i] === '1') { mastered[sp.id] = true; owned[sp.id] = true; }
+    });
+    return { name: d.n, owned, mastered };
   } catch(e) { return null; }
 }
 function buildShareUrl() {
@@ -256,8 +304,15 @@ function copyShare() {
 // ── Render checklist ─────────────────────────────────────────────────────────
 function makeSprite(sp, state) {
   const item = document.createElement('div');
-  item.className = 'sprite-item' + (state[sp.id] ? ' checked' : '');
+  item.className = 'sprite-item' + (state.owned[sp.id] ? ' checked' : '') + (state.mastered[sp.id] ? ' mastered' : '');
+  item.dataset.id = sp.id;
   item.title = `${sp.char} — ${sp.variant}`;
+
+  const star = document.createElement('button');
+  star.className = 'star-btn';
+  star.textContent = '★';
+  star.title = 'Mark as mastered';
+  star.addEventListener('click', (e) => { e.stopPropagation(); toggleMastered(sp, item); });
 
   const img = document.createElement('img');
   img.className = 'sprite-img';
@@ -272,26 +327,42 @@ function makeSprite(sp, state) {
   };
 
   const badge = document.createElement('div');
-  badge.className = 'badge';
+  badge.className = 'check-badge';
   badge.textContent = '✓';
 
   const label = document.createElement('div');
   label.className = 'variant-label';
   label.textContent = sp.variant;
 
+  item.appendChild(star);
   item.appendChild(img);
   item.appendChild(badge);
   item.appendChild(label);
-  item.addEventListener('click', () => {
-    const s = loadState();
-    if (s[sp.id]) delete s[sp.id]; else s[sp.id] = true;
-    saveState(s);
-    item.classList.toggle('checked', !!s[sp.id]);
-    updateCharCount(sp.ci);
-    updateProgress();
-    updateShareUrl();
-  });
+  item.addEventListener('click', () => toggleOwned(sp, item));
   return item;
+}
+
+function refreshItem(item, sp, s) {
+  item.classList.toggle('checked', !!s.owned[sp.id]);
+  item.classList.toggle('mastered', !!s.mastered[sp.id]);
+}
+function afterChange(ci) {
+  updateCharCount(ci);
+  updateProgress();
+  updateShareUrl();
+  applyFilter();
+}
+function toggleOwned(sp, item) {
+  const s = loadState();
+  if (s.owned[sp.id]) { delete s.owned[sp.id]; delete s.mastered[sp.id]; }
+  else s.owned[sp.id] = true;
+  saveState(s); refreshItem(item, sp, s); afterChange(sp.ci);
+}
+function toggleMastered(sp, item) {
+  const s = loadState();
+  if (s.mastered[sp.id]) { delete s.mastered[sp.id]; }
+  else { s.mastered[sp.id] = true; s.owned[sp.id] = true; }
+  saveState(s); refreshItem(item, sp, s); afterChange(sp.ci);
 }
 
 function updateCharCount(ci) {
@@ -299,8 +370,9 @@ function updateCharCount(ci) {
   if (!el) return;
   const state = loadState();
   const sprites = ALL_SPRITES.filter(sp => sp.ci === ci);
-  const have = sprites.filter(sp => state[sp.id]).length;
-  el.textContent = `${have} / ${sprites.length}`;
+  const owned = sprites.filter(sp => state.owned[sp.id]).length;
+  const mastered = sprites.filter(sp => state.mastered[sp.id]).length;
+  el.textContent = `${owned} / ${sprites.length}` + (mastered ? `  ·  ★ ${mastered}` : '');
 }
 
 function render() {
@@ -334,23 +406,70 @@ function render() {
 
   updateProgress();
   updateShareUrl();
+  applyFilter();
 }
 
 function updateProgress() {
   const state = loadState();
-  const total   = ALL_SPRITES.length;
-  const checked = ALL_SPRITES.filter(sp => state[sp.id]).length;
-  const pct     = total ? Math.round((checked / total) * 100) : 0;
-  document.getElementById('progressText').textContent = `${checked} / ${total}`;
+  const total    = ALL_SPRITES.length;
+  const owned    = ALL_SPRITES.filter(sp => state.owned[sp.id]).length;
+  const mastered = ALL_SPRITES.filter(sp => state.mastered[sp.id]).length;
+  const pct      = total ? Math.round((owned / total) * 100) : 0;
+  document.getElementById('progressText').textContent = `${owned} / ${total}`;
   document.getElementById('progressPct').textContent  = `${pct}%`;
   document.getElementById('progressFill').style.width = `${pct}%`;
+  document.getElementById('masteredText').textContent = `★ Mastered ${mastered} / ${total}`;
 }
 
 function resetAll() { if (confirm('Reset your collection?')) { localStorage.removeItem(STORAGE_KEY); render(); } }
 function checkAll() {
-  const s = {};
-  ALL_SPRITES.forEach(sp => { s[sp.id] = true; });
+  const s = loadState();
+  ALL_SPRITES.forEach(sp => { s.owned[sp.id] = true; });
   saveState(s); render();
+}
+function masterAll() {
+  const s = { owned: {}, mastered: {} };
+  ALL_SPRITES.forEach(sp => { s.owned[sp.id] = true; s.mastered[sp.id] = true; });
+  saveState(s); render();
+}
+
+// ── Owned / Unowned / Mastered filter ─────────────────────────────────────────
+let currentFilter = 'all';
+window.setFilter = function(f) {
+  currentFilter = f;
+  ['All','Owned','Unowned','Mastered'].forEach(k => {
+    document.getElementById('filter' + k).classList.toggle('active', k.toLowerCase() === f);
+  });
+  applyFilter();
+};
+function applyFilter() {
+  const state = loadState();
+  let totalVisible = 0;
+  document.querySelectorAll('.char-card').forEach(card => {
+    let vis = 0;
+    card.querySelectorAll('.sprite-item').forEach(item => {
+      const id = item.dataset.id;
+      const owned = !!state.owned[id], mastered = !!state.mastered[id];
+      let show = true;
+      if (currentFilter === 'owned') show = owned;
+      else if (currentFilter === 'unowned') show = !owned;
+      else if (currentFilter === 'mastered') show = mastered;
+      item.classList.toggle('hidden', !show);
+      if (show) vis++;
+    });
+    card.classList.toggle('hidden', vis === 0);
+    totalVisible += vis;
+  });
+  const em = document.getElementById('emptyMsg');
+  if (totalVisible === 0) {
+    em.style.display = 'block';
+    em.textContent = currentFilter === 'mastered' ? 'No mastered sprites yet — tap a ★ to start.'
+                   : currentFilter === 'owned'    ? 'No owned sprites yet.'
+                   : currentFilter === 'unowned'  ? 'You own them all — nice!'
+                   : 'Nothing to show.';
+  } else {
+    em.style.display = 'none';
+  }
 }
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────
@@ -389,7 +508,8 @@ window.removeMember = function(name) {
 function renderGroup() {
   const members = loadMembers();
   const myName  = getName() || 'Me';
-  const myDec   = { name: myName, state: loadState() };
+  const me      = loadState();
+  const myDec   = { name: myName, owned: me.owned, mastered: me.mastered };
   const all     = [myDec, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
 
   // Member tags
@@ -434,7 +554,7 @@ function renderGroup() {
       all.forEach(m => {
         const td = document.createElement('td');
         td.style.fontSize = '16px';
-        td.textContent = m.state[sp.id] ? '✅' : '—';
+        td.textContent = m.mastered && m.mastered[sp.id] ? '⭐' : (m.owned && m.owned[sp.id] ? '✅' : '—');
         row.appendChild(td);
       });
       body.appendChild(row);
