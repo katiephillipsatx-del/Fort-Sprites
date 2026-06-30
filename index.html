@@ -227,9 +227,24 @@ const CHARACTERS = [
   { name: 'Duck',        variants: { Default: 'T_Icon_BR_Duck_Default_L.webp',                            Gummy: 'T_Icon_BR_Duck_Candy_L.webp',                           Galaxy: 'T_Icon_BR_Duck_Galaxy_L.webp',                           Gold: 'T_Icon_BR_Duck_Gold_L.webp' } },
   { name: 'Grim',        variants: { Default: 'T_Icon_BR_GrimReaper_Default_L.webp',                      Gummy: 'T_Icon_BR_GrimReaper_Candy_L.webp',                     Galaxy: 'T_Icon_BR_GrimReaper_Galaxy_L.webp',                     Gold: 'T_Icon_BR_GrimReaper_Gold_L.webp' } },
   { name: 'Demon',       variants: { Default: 'T_Icon_BR_RedDemon_Default_L.webp',                        Gummy: 'T_Icon_BR_RedDemon_Candy_L.webp',                       Galaxy: 'T_Icon_BR_RedDemon_Galaxy_L.webp',                       Gold: 'T_Icon_BR_RedDemon_Gold_L.webp' } },
+  { name: 'Air',         variants: { Default: 'T_Icon_BR_Creature_Sprite_Air_ui_L.webp',                  Gummy: 'T_Icon_BR_Creature_Sprite_Air_Candy_ui_L.webp',         Galaxy: 'T_Icon_BR_Creature_Sprite_Air_Galaxy_ui_L.webp',         Gold: 'T_Icon_BR_Creature_Sprite_Air_Gold_ui_L.webp' } },
+  { name: 'Seven',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Seven_ui_L.webp',                Gummy: 'T_Icon_BR_Creature_Sprite_Seven_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Seven_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Seven_Gold_ui_L.webp' } },
 ];
 
-const VARIANT_ORDER = ['Default', 'Gummy', 'Galaxy', 'Gold'];
+const VARIANT_ORDER = ['Default', 'Gummy', 'Galaxy', 'Gold', 'Holofoil'];
+
+// Stable per-character codes keep saved progress intact when the roster grows
+// (sprite IDs are built from these, not from alphabetical display position).
+const CHAR_CODE = {
+  'Aura':0,'Boss':1,'Burnt Peanut':2,'Demon':3,'Dream':4,'Duck':5,'Earth':6,'Fire':7,
+  'Fishy':8,'Ghost':9,'Grim':10,'King':11,'Punk':12,'Striker':13,'Water':14,'Zero Point':15,
+  'Air':16,'Seven':17
+};
+CHARACTERS.forEach(ch => {
+  ch.code = CHAR_CODE[ch.name];
+  // Holofoil reuses the Gummy (Candy) asset path with the variant token swapped.
+  if (ch.variants.Gummy && !ch.variants.Holofoil) ch.variants.Holofoil = ch.variants.Gummy.replace('Candy', 'Holofoil');
+});
 
 // Display characters alphabetically by name.
 CHARACTERS.sort((a, b) => a.name.localeCompare(b.name));
@@ -239,7 +254,7 @@ const ALL_SPRITES = [];
 CHARACTERS.forEach((ch, ci) => {
   VARIANT_ORDER.forEach(v => {
     if (ch.variants[v]) {
-      ALL_SPRITES.push({ id: `c${ci}_${v}`, ci, variant: v, file: ch.variants[v], char: ch.name });
+      ALL_SPRITES.push({ id: `c${ch.code}_${v}`, ci, code: ch.code, variant: v, file: ch.variants[v], char: ch.name });
     }
   });
 });
@@ -322,7 +337,8 @@ function makeSprite(sp, state) {
   img.onerror = () => {
     const fb = document.createElement('div');
     fb.className = 'sprite-fallback';
-    fb.textContent = sp.variant[0];
+    fb.textContent = '?';
+    fb.title = 'Image not available yet';
     img.replaceWith(fb);
   };
 
