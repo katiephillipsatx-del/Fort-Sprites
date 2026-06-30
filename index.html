@@ -474,8 +474,8 @@ function applyFilter() {
 
 // ── Tabs ─────────────────────────────────────────────────────────────────────
 window.switchTab = function(tab) {
-  document.getElementById('mineTab').style.display  = tab === 'mine'  ? '' : 'none';
-  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
+  document.getElementById('mineTab').style.display  = tab === 'mine'  ? 'block' : 'none';
+  document.getElementById('groupTab').style.display = tab === 'group' ? 'block' : 'none';
   document.getElementById('tabMine').classList.toggle('active',  tab === 'mine');
   document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
   if (tab === 'group') renderGroup();
