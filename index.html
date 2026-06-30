@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite Sprite Tracker</title>
+<style>
+  :root {
+    --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --accent: #e94560;
+    --gold: #f5b942;
+    --green: #22c55e;
+    --card: #fdf6ee;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; padding: 20px; color: #222; }
+  .container { max-width: 1100px; margin: 0 auto; background: var(--card); border-radius: 16px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+  header { text-align: center; margin-bottom: 14px; }
+  .logo { font-size: 13px; font-weight: 800; letter-spacing: 2px; color: #888; text-transform: uppercase; }
+  header h1 { font-size: 36px; margin: 4px 0; background: linear-gradient(90deg, var(--accent), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
+  .subtitle { font-size: 13px; color: #777; margin: 0; }
+
+  .name-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+  .name-bar span { font-weight: 700; font-size: 14px; }
+  .name-bar input { border: 2px solid #ddd; border-radius: 8px; padding: 6px 12px; font-size: 14px; font-weight: 700; width: 180px; }
+  .name-bar input:focus { outline: none; border-color: var(--accent); }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e5e0d8; }
+  .tab { padding: 8px 20px; cursor: pointer; border-radius: 8px 8px 0 0; font-weight: 700; font-size: 14px; border: none; background: transparent; color: #888; }
+  .tab.active { background: var(--accent); color: #fff; }
+
+  .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
+  .progress-bar { flex: 1; min-width: 200px; max-width: 400px; height: 14px; background: #e5e0d8; border-radius: 8px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); width: 0%; transition: width 0.3s; }
+  #progressText, #progressPct { font-weight: 700; font-size: 14px; }
+
+  .controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+  button { cursor: pointer; border: none; border-radius: 8px; padding: 8px 16px; font-weight: 700; font-size: 13px; background: var(--accent); color: #fff; transition: opacity 0.2s, transform 0.1s; }
+  button:hover { opacity: 0.85; }
+  button:active { transform: scale(0.96); }
+  button.secondary { background: #555; }
+  button.green { background: var(--green); }
+
+  .share-box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 20px; border: 2px solid #e5e0d8; }
+  .share-box h3 { margin: 0 0 8px; font-size: 15px; }
+  .share-box p { margin: 0 0 10px; font-size: 13px; color: #666; }
+  .share-url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .share-url input { flex: 1; min-width: 200px; border: 2px solid #ddd; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-family: monospace; background: #f5f5f5; }
+
+  /* Character cards */
+  .char-card { background: #fff; border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; border: 2px solid #ece6dc; }
+  .char-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
+  .char-head h2 { font-size: 18px; margin: 0; color: #2a2a3a; }
+  .char-count { font-size: 12px; font-weight: 700; color: #999; }
+
+  .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .sprite-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: #faf7f1; border-radius: 12px; padding: 10px 6px 8px;
+    border: 2px solid #eee; cursor: pointer; position: relative;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.1s;
+    user-select: none;
+  }
+  .sprite-item:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.12); transform: translateY(-1px); }
+  .sprite-item.checked { border-color: var(--green); background: #effdf3; }
+  .sprite-item .badge {
+    position: absolute; top: 6px; right: 8px; width: 20px; height: 20px;
+    border-radius: 50%; background: var(--green); color: #fff;
+    font-size: 13px; font-weight: 900; display: none; align-items: center; justify-content: center;
+    line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .sprite-item.checked .badge { display: flex; }
+
+  .sprite-img {
+    width: 64px; height: 64px; object-fit: contain;
+    filter: grayscale(1) opacity(0.45); transition: filter 0.2s;
+    image-rendering: -webkit-optimize-contrast;
+  }
+  .sprite-item.checked .sprite-img { filter: none; }
+  .sprite-fallback {
+    width: 64px; height: 64px; border-radius: 8px; display: flex;
+    align-items: center; justify-content: center; background: #ece6dc;
+    color: #b3a98f; font-weight: 900; font-size: 20px;
+  }
+  .variant-label { font-size: 11px; font-weight: 700; color: #777; text-align: center; line-height: 1.2; }
+  .sprite-item.checked .variant-label { color: var(--green); }
+
+  /* Group view */
+  #groupTab { display: none; }
+  .add-member-row { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .add-member-row input { flex: 1; min-width: 220px; border: 2px solid #ddd; border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+  .members-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .member-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700; }
+  .member-tag button { background: none; padding: 0; font-size: 14px; color: #fff; opacity: 0.7; }
+  .member-tag button:hover { opacity: 1; }
+
+  .group-grid { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #f0ebe2; padding: 8px; text-align: center; position: sticky; top: 0; z-index: 2; }
+  thead th:first-child { text-align: left; min-width: 150px; }
+  tbody tr:nth-child(even) { background: #fdf6ee; }
+  tbody td { padding: 4px 8px; text-align: center; border-bottom: 1px solid #eee; white-space: nowrap; }
+  tbody td:first-child { text-align: left; font-size: 12px; color: #555; }
+  .group-sprite { width: 28px; height: 28px; object-fit: contain; vertical-align: middle; }
+  .cat-header td { background: #e8e0d5 !important; font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #555; padding: 6px 8px; }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; }
+  @media print { .controls, .tabs, .share-box, .name-bar { display: none; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">Fortnite — Creature Sprites</div>
+    <h1>Sprite Tracker</h1>
+    <p class="subtitle">Check off the sprites you've collected and share your progress with friends.</p>
+  </header>
+
+  <div class="name-bar">
+    <span>Your name:</span>
+    <input type="text" id="nameInput" placeholder="Enter your name" maxlength="20">
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tabMine" onclick="switchTab('mine')">My Collection</button>
+    <button class="tab" id="tabGroup" onclick="switchTab('group')">Group View</button>
+  </div>
+
+  <div id="mineTab">
+    <div class="progress-wrap">
+      <span id="progressText">0 / 0</span>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <span id="progressPct">0%</span>
+    </div>
+    <div class="controls">
+      <button onclick="resetAll()" class="secondary">Reset All</button>
+      <button onclick="checkAll()">Check All</button>
+      <button onclick="window.print()" class="secondary">Print / PDF</button>
+    </div>
+    <div class="share-box">
+      <h3>Share your progress</h3>
+      <p>Copy this link and send it to your group. They paste it into the Group View to see your collection.</p>
+      <div class="share-url">
+        <input type="text" id="shareUrl" readonly>
+        <button class="green" onclick="copyShare()">Copy Link</button>
+      </div>
+    </div>
+    <div id="characters"></div>
+  </div>
+
+  <div id="groupTab">
+    <p style="font-size:13px;color:#666;margin-top:0;">Paste a friend's share link to add them to the group.</p>
+    <div class="add-member-row">
+      <input type="text" id="memberInput" placeholder="Paste share link here…">
+      <button onclick="addMember()" class="green">Add Member</button>
+    </div>
+    <div class="members-list" id="membersList"></div>
+    <div class="group-grid">
+      <table><thead id="groupHead"></thead><tbody id="groupBody"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Sprite data ─────────────────────────────────────────────────────────────
+// Real Fortnite creature-sprite icons served straight from GitHub.
+// Source: https://github.com/busridechampion/sprites
+const IMG_BASE = 'https://raw.githubusercontent.com/busridechampion/sprites/main/';
+
+// Each character lists its variants -> exact image filename.
+const CHARACTERS = [
+  { name: 'Boss',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Boss_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Boss_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Boss_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Boss_Gold_ui_L.webp' } },
+  { name: 'Burnt Peanut',variants: { Default: 'T_Icon_BR_Creature_Sprite_BurntPeanut_ui_L.webp' } },
+  { name: 'Drifter',     variants: { Default: 'T_Icon_BR_Creature_Sprite_Drifter_ui_L.webp',              Candy: 'T_Icon_BR_Creature_Sprite_Drifter_Candy_ui_L.webp',     Galaxy: 'T_Icon_BR_Creature_Sprite_Drifter_Galaxy_ui_L.webp',     Gold: 'T_Icon_BR_Creature_Sprite_Drifter_Gold_ui_L.webp' } },
+  { name: 'Earth',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Earth_Ch7S3_UI_L.webp',          Candy: 'T_Icon_BR_Creature_Sprite_Earth_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Earth_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Earth_Gold_ui_L.webp' } },
+  { name: 'Fire',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Fire_Unvault_Ch7S3_ui_L.webp',   Candy: 'T_Icon_BR_Creature_Sprite_Fire_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Fire_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Fire_Gold_ui_L.webp' } },
+  { name: 'Fishy',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Fishy_ui_L.webp',                Candy: 'T_Icon_BR_Creature_Sprite_Fishy_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Fishy_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Fishy_Gold_ui_L.webp' } },
+  { name: 'Ghost',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Ghost_Unvault_L.webp',           Candy: 'T_Icon_BR_Creature_Sprite_Ghost_Candy_L.webp',          Galaxy: 'T_Icon_BR_Creature_Sprite_Ghost_Galaxy_L.webp',          Gold: 'T_Icon_BR_Creature_Sprite_Ghost_Gold_L.webp' } },
+  { name: 'King',        variants: { Default: 'T_Icon_BR_Creature_Sprite_King_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_King_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_King_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_King_Gold_ui_L.webp' } },
+  { name: 'Punk',        variants: { Default: 'T_Icon_BR_Creature_Sprite_Punk_ui_L.webp',                 Candy: 'T_Icon_BR_Creature_Sprite_Punk_Candy_ui_L.webp',        Galaxy: 'T_Icon_BR_Creature_Sprite_Punk_Galaxy_ui_L.webp',        Gold: 'T_Icon_BR_Creature_Sprite_Punk_Gold_ui_L.webp' } },
+  { name: 'Sleepy',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Sleepy_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Sleepy_Candy_ui_L.webp',      Galaxy: 'T_Icon_BR_Creature_Sprite_Sleepy_Galaxy_ui_L.webp',      Gold: 'T_Icon_BR_Creature_Sprite_Sleepy_Gold_ui_L.webp' } },
+  { name: 'Soccer',      variants: { Default: 'T_Icon_BR_Creature_Sprite_Soccer_ui_L.webp',               Candy: 'T_Icon_BR_Creature_Sprite_Soccer_Candy_L.webp',         Galaxy: 'T_Icon_BR_Creature_Sprite_Soccer_Galaxy_L.webp',         Gold: 'T_Icon_BR_Creature_Sprite_Soccer_Gold_L.webp' } },
+  { name: 'Water',       variants: { Default: 'T_Icon_BR_Creature_Sprite_Water_Unvault_Ch7S3_ui_L.webp',  Candy: 'T_Icon_BR_Creature_Sprite_Water_Candy_ui_L.webp',       Galaxy: 'T_Icon_BR_Creature_Sprite_Water_Galaxy_ui_L.webp',       Gold: 'T_Icon_BR_Creature_Sprite_Water_Gold_ui_L.webp' } },
+  { name: 'Zero Point',  variants: { Default: 'T_Icon_BR_Creature_Sprite_ZeroPoint_ui_L.webp',            Candy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Candy_ui_L.webp',   Galaxy: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Galaxy_ui_L.webp',   Gold: 'T_Icon_BR_Creature_Sprite_ZeroPoint_Gold_ui_L.webp' } },
+  { name: 'Duck',        variants: { Default: 'T_Icon_BR_Duck_Default_L.webp',                            Candy: 'T_Icon_BR_Duck_Candy_L.webp',                           Galaxy: 'T_Icon_BR_Duck_Galaxy_L.webp',                           Gold: 'T_Icon_BR_Duck_Gold_L.webp' } },
+  { name: 'Grim Reaper', variants: { Default: 'T_Icon_BR_GrimReaper_Default_L.webp',                      Candy: 'T_Icon_BR_GrimReaper_Candy_L.webp',                     Galaxy: 'T_Icon_BR_GrimReaper_Galaxy_L.webp',                     Gold: 'T_Icon_BR_GrimReaper_Gold_L.webp' } },
+  { name: 'Red Demon',   variants: { Default: 'T_Icon_BR_RedDemon_Default_L.webp',                        Candy: 'T_Icon_BR_RedDemon_Candy_L.webp',                       Galaxy: 'T_Icon_BR_RedDemon_Galaxy_L.webp',                       Gold: 'T_Icon_BR_RedDemon_Gold_L.webp' } },
+];
+
+const VARIANT_ORDER = ['Default', 'Candy', 'Galaxy', 'Gold'];
+
+// Flattened, stable list of every sprite (drives bit-encoding for share links).
+const ALL_SPRITES = [];
+CHARACTERS.forEach((ch, ci) => {
+  VARIANT_ORDER.forEach(v => {
+    if (ch.variants[v]) {
+      ALL_SPRITES.push({ id: `c${ci}_${v}`, ci, variant: v, file: ch.variants[v], char: ch.name });
+    }
+  });
+});
+const SPRITE_INDEX = {};
+ALL_SPRITES.forEach((sp, i) => { SPRITE_INDEX[sp.id] = i; });
+
+function spriteUrl(file) { return IMG_BASE + file; }
+
+// ── State ────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'fnSprite4';
+const NAME_KEY    = 'fnSpriteName4';
+const MEMBERS_KEY = 'fnSpriteMembers4';
+
+function loadState()    { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { return {}; } }
+function saveState(s)   { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+function getName()      { return localStorage.getItem(NAME_KEY) || ''; }
+function saveName(n)    { localStorage.setItem(NAME_KEY, n); }
+function loadMembers()  { try { return JSON.parse(localStorage.getItem(MEMBERS_KEY)) || []; } catch(e) { return []; } }
+function saveMembers(m) { localStorage.setItem(MEMBERS_KEY, JSON.stringify(m)); }
+
+// ── Encoding ─────────────────────────────────────────────────────────────────
+function encodeState(name, state) {
+  const bits = ALL_SPRITES.map(sp => state[sp.id] ? '1' : '0').join('');
+  return btoa(encodeURIComponent(JSON.stringify({ n: name, b: bits })));
+}
+function decodeState(encoded) {
+  try {
+    const d = JSON.parse(decodeURIComponent(atob(encoded)));
+    const state = {};
+    ALL_SPRITES.forEach((sp, i) => { if (d.b[i] === '1') state[sp.id] = true; });
+    return { name: d.n, state };
+  } catch(e) { return null; }
+}
+function buildShareUrl() {
+  const name = getName() || 'Anonymous';
+  const url = new URL(location.href.split('?')[0].split('#')[0]);
+  url.hash = encodeState(name, loadState());
+  return url.toString();
+}
+
+// ── Name ─────────────────────────────────────────────────────────────────────
+const nameInput = document.getElementById('nameInput');
+nameInput.value = getName();
+nameInput.addEventListener('input', () => { saveName(nameInput.value.trim()); updateShareUrl(); });
+
+function updateShareUrl() {
+  const el = document.getElementById('shareUrl');
+  if (el) el.value = buildShareUrl();
+}
+function copyShare() {
+  navigator.clipboard.writeText(buildShareUrl())
+    .then(() => showToast('Link copied!'))
+    .catch(() => { document.getElementById('shareUrl').select(); document.execCommand('copy'); showToast('Link copied!'); });
+}
+
+// ── Render checklist ─────────────────────────────────────────────────────────
+function makeSprite(sp, state) {
+  const item = document.createElement('div');
+  item.className = 'sprite-item' + (state[sp.id] ? ' checked' : '');
+  item.title = `${sp.char} — ${sp.variant}`;
+
+  const img = document.createElement('img');
+  img.className = 'sprite-img';
+  img.loading = 'lazy';
+  img.alt = `${sp.char} ${sp.variant}`;
+  img.src = spriteUrl(sp.file);
+  img.onerror = () => {
+    const fb = document.createElement('div');
+    fb.className = 'sprite-fallback';
+    fb.textContent = sp.variant[0];
+    img.replaceWith(fb);
+  };
+
+  const badge = document.createElement('div');
+  badge.className = 'badge';
+  badge.textContent = '✓';
+
+  const label = document.createElement('div');
+  label.className = 'variant-label';
+  label.textContent = sp.variant;
+
+  item.appendChild(img);
+  item.appendChild(badge);
+  item.appendChild(label);
+  item.addEventListener('click', () => {
+    const s = loadState();
+    if (s[sp.id]) delete s[sp.id]; else s[sp.id] = true;
+    saveState(s);
+    item.classList.toggle('checked', !!s[sp.id]);
+    updateCharCount(sp.ci);
+    updateProgress();
+    updateShareUrl();
+  });
+  return item;
+}
+
+function updateCharCount(ci) {
+  const el = document.getElementById(`count-${ci}`);
+  if (!el) return;
+  const state = loadState();
+  const sprites = ALL_SPRITES.filter(sp => sp.ci === ci);
+  const have = sprites.filter(sp => state[sp.id]).length;
+  el.textContent = `${have} / ${sprites.length}`;
+}
+
+function render() {
+  const state = loadState();
+  const container = document.getElementById('characters');
+  container.innerHTML = '';
+
+  CHARACTERS.forEach((ch, ci) => {
+    const card = document.createElement('div');
+    card.className = 'char-card';
+
+    const head = document.createElement('div');
+    head.className = 'char-head';
+    const h2 = document.createElement('h2');
+    h2.textContent = ch.name;
+    const count = document.createElement('span');
+    count.className = 'char-count';
+    count.id = `count-${ci}`;
+    head.appendChild(h2);
+    head.appendChild(count);
+    card.appendChild(head);
+
+    const grid = document.createElement('div');
+    grid.className = 'variant-grid';
+    ALL_SPRITES.filter(sp => sp.ci === ci).forEach(sp => grid.appendChild(makeSprite(sp, state)));
+    card.appendChild(grid);
+
+    container.appendChild(card);
+    updateCharCount(ci);
+  });
+
+  updateProgress();
+  updateShareUrl();
+}
+
+function updateProgress() {
+  const state = loadState();
+  const total   = ALL_SPRITES.length;
+  const checked = ALL_SPRITES.filter(sp => state[sp.id]).length;
+  const pct     = total ? Math.round((checked / total) * 100) : 0;
+  document.getElementById('progressText').textContent = `${checked} / ${total}`;
+  document.getElementById('progressPct').textContent  = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+function resetAll() { if (confirm('Reset your collection?')) { localStorage.removeItem(STORAGE_KEY); render(); } }
+function checkAll() {
+  const s = {};
+  ALL_SPRITES.forEach(sp => { s[sp.id] = true; });
+  saveState(s); render();
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+window.switchTab = function(tab) {
+  document.getElementById('mineTab').style.display  = tab === 'mine'  ? '' : 'none';
+  document.getElementById('groupTab').style.display = tab === 'group' ? '' : 'none';
+  document.getElementById('tabMine').classList.toggle('active',  tab === 'mine');
+  document.getElementById('tabGroup').classList.toggle('active', tab === 'group');
+  if (tab === 'group') renderGroup();
+};
+
+// ── Group view ────────────────────────────────────────────────────────────────
+window.addMember = function() {
+  const input = document.getElementById('memberInput');
+  const raw = input.value.trim();
+  if (!raw) return;
+  let encoded = raw;
+  try { encoded = new URL(raw).hash.replace('#', ''); } catch(e) {}
+  const decoded = decodeState(encoded);
+  if (!decoded) { showToast('Invalid link — paste the full share URL.'); return; }
+  const members = loadMembers();
+  const idx = members.findIndex(m => m.name === decoded.name);
+  if (idx >= 0) members[idx] = { name: decoded.name, encoded };
+  else members.push({ name: decoded.name, encoded });
+  saveMembers(members);
+  input.value = '';
+  renderGroup();
+  showToast(`Added ${decoded.name}!`);
+};
+
+window.removeMember = function(name) {
+  saveMembers(loadMembers().filter(m => m.name !== name));
+  renderGroup();
+};
+
+function renderGroup() {
+  const members = loadMembers();
+  const myName  = getName() || 'Me';
+  const myDec   = { name: myName, state: loadState() };
+  const all     = [myDec, ...members.map(m => decodeState(m.encoded)).filter(Boolean)];
+
+  // Member tags
+  const mList = document.getElementById('membersList');
+  mList.innerHTML = '';
+  members.forEach(m => {
+    const tag = document.createElement('span');
+    tag.className = 'member-tag';
+    const safeName = m.name.replace(/'/g, "\\'");
+    tag.innerHTML = `${escapeHtml(m.name)} <button onclick="removeMember('${safeName}')">✕</button>`;
+    mList.appendChild(tag);
+  });
+
+  // Table
+  const head = document.getElementById('groupHead');
+  const body = document.getElementById('groupBody');
+  head.innerHTML = ''; body.innerHTML = '';
+
+  const headRow = document.createElement('tr');
+  const th0 = document.createElement('th'); th0.textContent = 'Sprite'; headRow.appendChild(th0);
+  all.forEach(m => { const th = document.createElement('th'); th.textContent = m.name; headRow.appendChild(th); });
+  head.appendChild(headRow);
+
+  CHARACTERS.forEach((ch, ci) => {
+    const catRow = document.createElement('tr'); catRow.className = 'cat-header';
+    const catTd  = document.createElement('td'); catTd.colSpan = all.length + 1; catTd.textContent = ch.name;
+    catRow.appendChild(catTd); body.appendChild(catRow);
+
+    ALL_SPRITES.filter(sp => sp.ci === ci).forEach(sp => {
+      const row = document.createElement('tr');
+      const nameTd = document.createElement('td');
+      const mini = document.createElement('img');
+      mini.className = 'group-sprite';
+      mini.loading = 'lazy';
+      mini.alt = sp.variant;
+      mini.src = spriteUrl(sp.file);
+      mini.onerror = () => { mini.replaceWith(document.createTextNode('')); };
+      nameTd.appendChild(mini);
+      nameTd.appendChild(document.createTextNode(' ' + sp.variant));
+      row.appendChild(nameTd);
+
+      all.forEach(m => {
+        const td = document.createElement('td');
+        td.style.fontSize = '16px';
+        td.textContent = m.state[sp.id] ? '✅' : '—';
+        row.appendChild(td);
+      });
+      body.appendChild(row);
+    });
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function escapeHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Handle incoming share link ────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  const hash = location.hash.replace('#', '');
+  if (hash) {
+    const decoded = decodeState(hash);
+    if (decoded && decoded.name !== getName()) {
+      const members = loadMembers();
+      if (!members.find(m => m.name === decoded.name)) {
+        members.push({ name: decoded.name, encoded: hash });
+        saveMembers(members);
+        showToast(`Added ${decoded.name} to Group View!`);
+      }
+      switchTab('group');
+    }
+    history.replaceState(null, '', location.pathname);
+  }
+});
+
+render();
+</script>
+</body>
+</html>
