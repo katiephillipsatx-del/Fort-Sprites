@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite Runners - Sprite Tracker</title>
+<style>
+  :root {
+    --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --card-bg: #ffffff;
+    --accent: #e94560;
+    --gold: #f5b942;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    padding: 20px;
+    color: #222;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fdf6ee;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  header .logo {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #444;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: 38px;
+    margin: 4px 0;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+  header .sub {
+    font-size: 13px;
+    color: #777;
+  }
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .progress-bar {
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
+    height: 14px;
+    background: #e5e0d8;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  #progressText { font-weight: 700; font-size: 14px; }
+  .controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--accent);
+    color: #fff;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  button:hover { opacity: 0.85; }
+  button:active { transform: scale(0.96); }
+  button.secondary { background: #444; }
+  .category {
+    margin-bottom: 24px;
+  }
+  .category h2 {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #555;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
+  }
+  .sprite-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 4px;
+    border: 2px solid #eee;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sprite-item.checked {
+    border-color: var(--accent);
+    background: #fff0f3;
+  }
+  .sprite-item .name {
+    font-size: 10px;
+    text-align: center;
+    color: #666;
+    line-height: 1.2;
+    min-height: 24px;
+  }
+  .sprite-item input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+  }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .controls { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">Fortnite Runners — Chapter 7 Season 3</div>
+    <h1>Sprite Tracker</h1>
+    <div class="sub">Check off each Sprite skin as you collect it</div>
+  </header>
+
+  <div class="progress-wrap">
+    <span id="progressText">0 / 0</span>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="progressPct">0%</span>
+  </div>
+
+  <div class="controls">
+    <button id="resetBtn" class="secondary">Reset All</button>
+    <button id="checkAllBtn">Check All</button>
+    <button id="printBtn" class="secondary">Print / Save PDF</button>
+  </div>
+
+  <div id="categories"></div>
+
+  <footer>
+    Made for sharing — your progress is saved in this browser only.
+  </footer>
+</div>
+
+<script>
+const categories = [
+  { name: "Classic Sprites", items: ["Blue Sprite","Yellow Sprite","Pink Sprite","Purple Sprite","Silver Sprite","Teal Sprite"] },
+  { name: "Pastel Sprites", items: ["Cream Sprite","Tan Sprite","Coral Sprite","Lavender Sprite","Magenta Sprite"] },
+  { name: "Camo Sprites", items: ["Tan Camo","Olive Camo","Coral Camo","Purple Camo","Navy Camo"] },
+  { name: "Stone Sprites", items: ["Brown Stone","Tan Stone","Coral Stone","Charcoal Stone","Silver Stone"] },
+  { name: "Metallic Sprites", items: ["Gold Metallic","Rose Gold","Ruby","Amethyst","Onyx","Straw Hat Sprite"] },
+  { name: "Fire Sprites", items: ["Orange Fire","Gold Fire","Coral Fire","Purple Fire","Pink Fire"] },
+  { name: "Spiked Sprites", items: ["Black Spiked","Gold Spiked","Coral Spiked","Purple Spiked","Silver Spiked","Navy Spiked"] },
+  { name: "Sunglasses Sprites", items: ["Black Shades","Gold Shades","Purple Shades","Silver Shades","Green Shades"] },
+  { name: "Demon Sprites", items: ["Red Demon","Gold Demon","Coral Demon","Purple Demon","White Demon"] },
+  { name: "Skull Sprites", items: ["Hooded Skull","Gold Skull","Coral Skull","Purple Skull","Silver Skull"] },
+  { name: "Ghost Sprites", items: ["White Ghost","Gold Ghost","Coral Ghost","Purple Ghost","Teal Ghost"] },
+  { name: "Horned Sprites", items: ["Red Horned","Gold Horned","Coral Horned","Purple Horned"] },
+  { name: "Soccer Sprites", items: ["Soccer Star","Gold Chick","Coral Chick","Navy Chick","Pink Chick"] },
+  { name: "Crowned Sprites", items: ["Silver Crown","Gold Crown","Coral Crown","Purple Crown","Frost Crown"] },
+  { name: "Hooded Sprites", items: ["Black Hood","Gold Hood","Coral Hood","Purple Hood","Silver Hood"] },
+  { name: "Cosmic Sprites", items: ["Purple Cosmic","Red Cosmic","Coral Cosmic","Silver Cosmic","Lilac Cosmic"] },
+  { name: "Hero Sprites", items: ["Spider Blue","Spider Gold","Spider Coral","Spider Purple","Spider Green"] }
+];
+
+const STORAGE_KEY = "fortniteSpriteTracker";
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function render() {
+  const state = loadState();
+  const container = document.getElementById('categories');
+  container.innerHTML = '';
+
+  categories.forEach((cat, ci) => {
+    const section = document.createElement('div');
+    section.className = 'category';
+
+    const h2 = document.createElement('h2');
+    h2.textContent = cat.name;
+    section.appendChild(h2);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    cat.items.forEach((item, ii) => {
+      const id = `c${ci}-i${ii}`;
+      const wrap = document.createElement('label');
+      wrap.className = 'sprite-item';
+      wrap.htmlFor = id;
+
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'name';
+      nameDiv.textContent = item;
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = id;
+      checkbox.checked = !!state[id];
+      if (checkbox.checked) wrap.classList.add('checked');
+
+      checkbox.addEventListener('change', () => {
+        const s = loadState();
+        s[id] = checkbox.checked;
+        saveState(s);
+        wrap.classList.toggle('checked', checkbox.checked);
+        updateProgress();
+      });
+
+      wrap.appendChild(nameDiv);
+      wrap.appendChild(checkbox);
+      grid.appendChild(wrap);
+    });
+
+    section.appendChild(grid);
+    container.appendChild(section);
+  });
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const state = loadState();
+  const total = categories.reduce((sum, c) => sum + c.items.length, 0);
+  const checked = Object.values(state).filter(Boolean).length;
+  const pct = total ? Math.round((checked / total) * 100) : 0;
+  document.getElementById('progressText').textContent = `${checked} / ${total}`;
+  document.getElementById('progressPct').textContent = `${pct}%`;
+  document.getElementById('progressFill').style.width = `${pct}%`;
+}
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  if (confirm('Reset all checkboxes?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    render();
+  }
+});
+
+document.getElementById('checkAllBtn').addEventListener('click', () => {
+  const state = {};
+  categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => { state[`c${ci}-i${ii}`] = true; });
+  });
+  saveState(state);
+  render();
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+render();
+</script>
+</body>
+</html>
